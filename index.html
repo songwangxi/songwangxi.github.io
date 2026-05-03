@@ -30,20 +30,28 @@
 
         /* 标题渐变色：从黑色渐变到深蓝色 */
         h1 {
-            font-size: 2.5rem;
-            background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-        }
-        h2 {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+    font-size: 2.5rem;
+    font-weight: 700;
+    /* 定义渐变背景 */
+    background: linear-gradient(135deg, #000000 0%, #1e3a8a 100%);
+    /* 标准属性 */
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* 核心：让文字颜色透明，显示出背景渐变 */
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #000000 0%, #1e3a8a 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+}
         h3 { font-size: 1.4rem; color: #1e293b; } /* h3 保持深色，适合卡片内标题 */
 
         /* ========== 2. 卡片阴影样式 ========== */

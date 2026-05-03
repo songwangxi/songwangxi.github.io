@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #334155;
-            background-color: #e0f2fe; /* 全局淡蓝色背景 */
+            background-color: #f0f9ff;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -22,36 +22,34 @@
         input, button, textarea, select { font: inherit; color: inherit; }
         a { color: #4f46e5; text-decoration: none; transition: color 0.2s ease; }
         a:hover { color: #4338ca; }
-        h1, h2, h3, h4, h5, h6 { line-height: 1.3; font-weight: 600; }
         p { margin-bottom: 1rem; }
         ul, ol { list-style: none; }
         .container { width: 100%; max-width: 800px; margin: 0 auto; }
         .text-center { text-align: center; }
 
-        /* 标题渐变色：从黑色渐变到深蓝色 */
-        h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #000000 0%, #1e3a8a 100%);
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    color: transparent !important;
-    -webkit-text-fill-color: transparent !important;
-    margin-bottom: 0.5rem;
-}
+        /* ========== 标题基础样式 ========== */
+        h1, h2, h3, h4, h5 {
+            line-height: 1.3;
+            font-weight: 700;
+            color: #1e293b; /* 默认纯深色 */
+            margin-bottom: 0.5rem;
+        }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 1.8rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.3rem; }
+        h5 { font-size: 1.1rem; }
 
-h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #000000 0%, #1e3a8a 100%);
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-    color: transparent !important;
-    -webkit-text-fill-color: transparent !important;
-}
-        h3 { font-size: 1.4rem; color: #1e293b; } /* h3 保持深色，适合卡片内标题 */
+        /* ========== 渐变文字类 ========== */
+        .gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
 
-        /* ========== 2. 卡片阴影样式 ========== */
+        /* ========== 卡片阴影样式 ========== */
         .card {
             background: #ffffff;
             border-radius: 12px;
@@ -65,7 +63,7 @@ h2 {
             transform: translateY(-4px);
         }
 
-        /* ========== 3. 链接下划线展开特效（无原有下划线） ========== */
+        /* ========== 链接下划线展开特效 ========== */
         .link-underline {
             position: relative;
             text-decoration: none;
@@ -90,11 +88,15 @@ h2 {
 <body>
 
     <div class="container">
-        <h1>👋 欢迎来到我的网站</h1>
-        <p>标题带有黑到深蓝的渐变，背景是舒适的淡蓝色。</p>
+        <!-- 使用示例：只有包裹在 .gradient 里的文字才有渐变 -->
+        <h1>👋 <span class="gradient">欢迎来到我的网站</span></h1>
+        <h2><span class="gradient">渐变标题</span> + 普通文字</h2>
+        <h3>这是<span class="gradient">部分渐变</span>的标题</h3>
+        <h4>完全不渐变的标题</h4>
+        <h5><span class="gradient">H5 也可以渐变</span></h5>
 
         <div class="card">
-            <h3>关于这个模板</h3>
+            <h3><span class="gradient">卡片标题</span></h3>
             <p>柔和阴影的卡片，悬停时上浮。</p>
             <a href="#" class="link-underline">了解详情 →</a>
         </div>

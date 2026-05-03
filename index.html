@@ -24,14 +24,14 @@
         a:hover { color: #4338ca; }
         p { margin-bottom: 1rem; }
         ul, ol { list-style: none; }
-        .container { width: 100%; max-width: 800px; margin: 0 auto; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; }
         .text-center { text-align: center; }
 
         /* ========== 标题基础样式 ========== */
         h1, h2, h3, h4, h5 {
             line-height: 1.3;
             font-weight: 700;
-            color: #1e293b; /* 默认纯深色 */
+            color: #1e293b;
             margin-bottom: 0.5rem;
         }
         h1 { font-size: 2.5rem; }
@@ -49,19 +49,37 @@
             color: transparent;
         }
 
+        /* ========== 卡片网格容器 ========== */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem; /* 卡片之间的间距 */
+            justify-content: center; /* 默认居中 */
+            margin-top: 2rem;
+        }
+
+        /* 对齐方式修饰类 */
+        .card-grid.left { justify-content: flex-start; }
+        .card-grid.right { justify-content: flex-end; }
+        .card-grid.stretch .card { flex: 1; min-width: 250px; } /* 卡片等宽 */
+
         /* ========== 卡片阴影样式 ========== */
         .card {
             background: #ffffff;
             border-radius: 12px;
             padding: 1.8rem;
-            margin-bottom: 1.5rem;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
             transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            flex: 0 1 300px; /* 基础宽度300px，可伸缩 */
         }
         .card:hover {
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
             transform: translateY(-4px);
         }
+
+        /* 卡片宽度修饰类 */
+        .card.wide { flex-basis: 100%; } /* 占满整行 */
+        .card.narrow { flex-basis: 200px; } /* 更窄 */
 
         /* ========== 链接下划线展开特效 ========== */
         .link-underline {
@@ -86,25 +104,56 @@
     </style>
 </head>
 <body>
-
+    
     <div class="container">
-        <!-- 使用示例：只有包裹在 .gradient 里的文字才有渐变 -->
-        <h1>👋 <span class="gradient">欢迎来到我的网站</span></h1>
-        <h2><span class="gradient">渐变标题</span> + 普通文字</h2>
-        <h3>这是<span class="gradient">部分渐变</span>的标题</h3>
-        <h4>完全不渐变的标题</h4>
-        <h5><span class="gradient">H5 也可以渐变</span></h5>
+        <h1>👋 <span class="gradient">自定义卡片位置</span></h1>
+        <p>下面展示了几种不同的对齐和宽度组合。</p>
 
-        <div class="card">
-            <h3><span class="gradient">卡片标题</span></h3>
-            <p>柔和阴影的卡片，悬停时上浮。</p>
-            <a href="#" class="link-underline">了解详情 →</a>
+        <!-- 示例1：默认居中，自动换行 -->
+        <h2>1. 默认居中布局</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>卡片 A</h3>
+                <p>自动换行，宽度灵活。</p>
+            </div>
+            <div class="card">
+                <h3>卡片 B</h3>
+                <p>适合展示项目。</p>
+            </div>
+            <div class="card">
+                <h3>卡片 C</h3>
+                <p>三张卡片会自动换行。</p>
+            </div>
         </div>
 
-        <div class="card">
-            <h3>链接特效</h3>
-            <p>下面链接悬停时，下划线从中间向两边展开。</p>
-            <a href="#" class="link-underline">这是一个示范链接</a>
+        <!-- 示例2：左对齐布局 -->
+        <h2>2. 左对齐布局</h2>
+        <div class="card-grid left">
+            <div class="card narrow">
+                <h3>窄卡片</h3>
+                <p>靠左排列。</p>
+            </div>
+            <div class="card">
+                <h3>正常卡片</h3>
+                <p>也是靠左。</p>
+            </div>
+        </div>
+
+        <!-- 示例3：混合宽度布局 -->
+        <h2>3. 混合宽度</h2>
+        <div class="card-grid">
+            <div class="card wide">
+                <h3>宽卡片</h3>
+                <p>这张卡片占满了整行。</p>
+            </div>
+            <div class="card narrow">
+                <h3>窄卡片 1</h3>
+                <p>并排显示。</p>
+            </div>
+            <div class="card narrow">
+                <h3>窄卡片 2</h3>
+                <p>并排显示。</p>
+            </div>
         </div>
     </div>
 

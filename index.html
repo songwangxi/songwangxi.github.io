@@ -91,10 +91,61 @@ ul, ol {
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 2rem; }
+        /* ========== 卡片阴影样式 ========== */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  /* 柔和的多层阴影 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 
+              0 4px 16px rgba(0, 0, 0, 0.04);
+  /* 过渡动画，让悬停效果更平滑 */
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover {
+  /* 悬停时阴影加深并轻微上浮 */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 
+              0 2px 6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
+}
+
+/* ========== 链接下划线展开特效 ========== */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+  color: #4f46e5;
+  font-weight: 500;
+  padding-bottom: 2px;
+}
+
+/* 下划线使用 ::after 伪元素绘制 */
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #4f46e5;
+  /* 下划线展开的过渡动画 */
+  transition: width 0.3s ease-in-out;
+}
+
+/* 悬停时，下划线从中间向两边展开 */
+.link-underline:hover::after {
+  width: 100%;
+}
+
+/* 可选修饰：让下划线从中间展开 */
+.link-underline.center::after {
+  left: 50%;
+  transform: translateX(-50%);
+}
     </style>
 </head>
-<body>
-    <h1>👋 你好，世界！</h1>
-    <a href="https://www.baidu.com">链接</a>
-</body>
+    <body>
+        <h1>👋 你好，世界！</h1>
+        <a href="https://www.baidu.com">链接</a>
+    </body>
 </html>

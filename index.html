@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #334155;
-            background-color: #f8fafc;
+            background-color: #e0f2fe; /* 全局淡蓝色背景 */
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -22,14 +22,29 @@
         input, button, textarea, select { font: inherit; color: inherit; }
         a { color: #4f46e5; text-decoration: none; transition: color 0.2s ease; }
         a:hover { color: #4338ca; }
-        h1, h2, h3, h4, h5, h6 { line-height: 1.3; color: #1e293b; font-weight: 600; }
-        h1 { font-size: 2.2rem; }
-        h2 { font-size: 1.8rem; }
-        h3 { font-size: 1.4rem; }
+        h1, h2, h3, h4, h5, h6 { line-height: 1.3; font-weight: 600; }
         p { margin-bottom: 1rem; }
         ul, ol { list-style: none; }
         .container { width: 100%; max-width: 800px; margin: 0 auto; }
         .text-center { text-align: center; }
+
+        /* 标题渐变色：从黑色渐变到深蓝色 */
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+        h2 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #1e293b 0%, #1e3a8a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        h3 { font-size: 1.4rem; color: #1e293b; } /* h3 保持深色，适合卡片内标题 */
 
         /* ========== 2. 卡片阴影样式 ========== */
         .card {
@@ -70,18 +85,18 @@
 <body>
 
     <div class="container">
-        
+        <h1>👋 欢迎来到我的网站</h1>
+        <p>标题带有黑到深蓝的渐变，背景是舒适的淡蓝色。</p>
 
-        <!-- 卡片示例 -->
         <div class="card">
             <h3>关于这个模板</h3>
-            <p>这个卡片拥有柔和的阴影效果，鼠标放上来时，它会微微上浮，阴影加深。</p>
+            <p>柔和阴影的卡片，悬停时上浮。</p>
             <a href="#" class="link-underline">了解详情 →</a>
         </div>
 
         <div class="card">
-            <h3>链接特效演示</h3>
-            <p>下面的链接平时没有下划线，但当鼠标悬停时，一条线会从中间向两边优雅地展开。</p>
+            <h3>链接特效</h3>
+            <p>下面链接悬停时，下划线从中间向两边展开。</p>
             <a href="#" class="link-underline">这是一个示范链接</a>
         </div>
     </div>

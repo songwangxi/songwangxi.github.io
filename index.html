@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>我的网站</title>
     <style>
-        /* ========== 1. 现代化全局CSS样式 ========== */
+        /* ========== 现代化全局CSS样式 ========== */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
         body {
@@ -19,15 +19,12 @@
             padding: 2rem;
         }
         img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
-        input, button, textarea, select { font: inherit; color: inherit; }
         a { color: #4f46e5; text-decoration: none; transition: color 0.2s ease; }
         a:hover { color: #4338ca; }
         p { margin-bottom: 1rem; }
-        ul, ol { list-style: none; }
-        .container { width: 100%; max-width: 1000px; margin: 0 auto; }
-        .text-center { text-align: center; }
+        .container { width: 100%; max-width: 800px; margin: 0 auto; }
 
-        /* ========== 标题基础样式 ========== */
+        /* 标题基础样式 */
         h1, h2, h3, h4, h5 {
             line-height: 1.3;
             font-weight: 700;
@@ -35,12 +32,10 @@
             margin-bottom: 0.5rem;
         }
         h1 { font-size: 2.5rem; }
-        h2 { font-size: 1.8rem; }
+        h2 { font-size: 1.8rem; margin-top: 2rem; }
         h3 { font-size: 1.5rem; }
-        h4 { font-size: 1.3rem; }
-        h5 { font-size: 1.1rem; }
 
-        /* ========== 渐变文字类 ========== */
+        /* 渐变文字类 */
         .gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
             -webkit-background-clip: text;
@@ -49,113 +44,126 @@
             color: transparent;
         }
 
-        /* ========== 卡片网格容器 ========== */
+        /* 卡片网格 */
         .card-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.5rem; /* 卡片之间的间距 */
-            justify-content: center; /* 默认居中 */
-            margin-top: 2rem;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
-
-        /* 对齐方式修饰类 */
-        .card-grid.left { justify-content: flex-start; }
-        .card-grid.right { justify-content: flex-end; }
-        .card-grid.stretch .card { flex: 1; min-width: 250px; } /* 卡片等宽 */
-
-        /* ========== 卡片阴影样式 ========== */
         .card {
             background: #ffffff;
             border-radius: 12px;
             padding: 1.8rem;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
-            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            flex: 0 1 300px; /* 基础宽度300px，可伸缩 */
+            transition: all 0.35s;
+            flex: 0 1 300px;
         }
         .card:hover {
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             transform: translateY(-4px);
         }
 
-        /* 卡片宽度修饰类 */
-        .card.wide { flex-basis: 100%; } /* 占满整行 */
-        .card.narrow { flex-basis: 200px; } /* 更窄 */
-
-        /* ========== 链接下划线展开特效 ========== */
+        /* 链接下划线特效 */
         .link-underline {
             position: relative;
             text-decoration: none;
             color: #4f46e5;
             font-weight: 500;
-            padding-bottom: 2px;
         }
         .link-underline::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -2px;
             left: 50%;
             transform: translateX(-50%);
             width: 0;
             height: 2px;
             background-color: #4f46e5;
-            transition: width 0.3s ease-in-out;
+            transition: width 0.3s;
         }
         .link-underline:hover::after { width: 100%; }
+
+        /* 开关按钮 */
+        .toggle-btn {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: background 0.2s;
+        }
+        .toggle-btn:hover { background: #4338ca; }
+
+        /* 关闭渐变时的标题样式 */
+        body.no-gradient h1 .gradient,
+        body.no-gradient h2 .gradient,
+        body.no-gradient h3 .gradient,
+        body.no-gradient h4 .gradient,
+        body.no-gradient h5 .gradient {
+            background: none;
+            -webkit-text-fill-color: #1e293b;
+            color: #1e293b;
+        }
     </style>
 </head>
 <body>
-    
+
     <div class="container">
-        <h1>👋 <span class="gradient">自定义卡片位置</span></h1>
-        <p>下面展示了几种不同的对齐和宽度组合。</p>
+        <h1>👋 <span class="gradient">偏好保存演示</span></h1>
+        <button id="gradientToggle" class="toggle-btn">🎨 关闭渐变</button>
 
-        <!-- 示例1：默认居中，自动换行 -->
-        <h2>1. 默认居中布局</h2>
+        <h2><span class="gradient">卡片区域</span></h2>
         <div class="card-grid">
             <div class="card">
-                <h3>卡片 A</h3>
-                <p>自动换行，宽度灵活。</p>
+                <h3><span class="gradient">卡片一</span></h3>
+                <p>你的渐变偏好会被浏览器记住。</p>
+                <a href="#" class="link-underline">了解详情 →</a>
             </div>
             <div class="card">
-                <h3>卡片 B</h3>
-                <p>适合展示项目。</p>
-            </div>
-            <div class="card">
-                <h3>卡片 C</h3>
-                <p>三张卡片会自动换行。</p>
-            </div>
-        </div>
-
-        <!-- 示例2：左对齐布局 -->
-        <h2>2. 左对齐布局</h2>
-        <div class="card-grid left">
-            <div class="card narrow">
-                <h3>窄卡片</h3>
-                <p>靠左排列。</p>
-            </div>
-            <div class="card">
-                <h3>正常卡片</h3>
-                <p>也是靠左。</p>
-            </div>
-        </div>
-
-        <!-- 示例3：混合宽度布局 -->
-        <h2>3. 混合宽度</h2>
-        <div class="card-grid">
-            <div class="card wide">
-                <h3>宽卡片</h3>
-                <p>这张卡片占满了整行。</p>
-            </div>
-            <div class="card narrow">
-                <h3>窄卡片 1</h3>
-                <p>并排显示。</p>
-            </div>
-            <div class="card narrow">
-                <h3>窄卡片 2</h3>
-                <p>并排显示。</p>
+                <h3><span class="gradient">卡片二</span></h3>
+                <p>刷新页面或下次打开，设置依然生效。</p>
+                <a href="#" class="link-underline">查看示例 →</a>
             </div>
         </div>
     </div>
+
+    <script>
+        const toggleBtn = document.getElementById('gradientToggle');
+        const body = document.body;
+
+        // 页面加载时，读取保存的偏好
+        function loadPreference() {
+            const saved = localStorage.getItem('gradientPreference');
+            if (saved === 'off') {
+                body.classList.add('no-gradient');
+                toggleBtn.textContent = '✨ 开启渐变';
+            } else {
+                body.classList.remove('no-gradient');
+                toggleBtn.textContent = '🎨 关闭渐变';
+            }
+        }
+
+        // 点击按钮时，切换状态并保存
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('no-gradient');
+
+            if (body.classList.contains('no-gradient')) {
+                toggleBtn.textContent = '✨ 开启渐变';
+                localStorage.setItem('gradientPreference', 'off'); // 保存“关闭”状态
+            } else {
+                toggleBtn.textContent = '🎨 关闭渐变';
+                localStorage.setItem('gradientPreference', 'on'); // 保存“开启”状态
+            }
+        });
+
+        // 初始化
+        loadPreference();
+    </script>
 
 </body>
 </html>

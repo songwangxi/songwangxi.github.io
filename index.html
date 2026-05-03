@@ -12,7 +12,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #334155;
-            background-color: #f0f9ff; /* 淡蓝色背景 */
+            background-color: #f0f9ff;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -20,8 +20,6 @@
         }
         img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
         input, button, textarea, select { font: inherit; color: inherit; }
-        a { color: #4f46e5; text-decoration: none; transition: color 0.2s ease; }
-        a:hover { color: #4338ca; }
         p { margin-bottom: 1rem; }
         ul, ol { list-style: none; }
         .container { width: 100%; max-width: 1000px; margin: 0 auto; }
@@ -30,7 +28,7 @@
         h1, h2, h3, h4, h5 {
             line-height: 1.3;
             font-weight: 700;
-            color: #1e293b; /* 默认深色 */
+            color: #1e293b;
             margin-bottom: 0.5rem;
         }
         h1 { font-size: 2.5rem; }
@@ -78,7 +76,6 @@
             justify-content: center;
             margin-top: 1rem;
         }
-        /* 对齐修饰类 */
         .card-grid.left { justify-content: flex-start; }
         .card-grid.right { justify-content: flex-end; }
 
@@ -89,17 +86,16 @@
             padding: 1.8rem;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
             transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            flex: 0 1 300px; /* 基础宽度 */
+            flex: 0 1 300px;
         }
         .card:hover {
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
             transform: translateY(-4px);
         }
-        /* 卡片宽度修饰类 */
         .card.wide { flex-basis: 100%; }
         .card.narrow { flex-basis: 200px; }
 
-        /* ========== 链接下划线展开特效 ========== */
+        /* ========== 链接下划线展开特效（默认颜色） ========== */
         .link-underline {
             position: relative;
             text-decoration: none;
@@ -115,10 +111,15 @@
             transform: translateX(-50%);
             width: 0;
             height: 2px;
-            background-color: #4f46e5;
+            background: #4f46e5; /* 默认下划线颜色 */
             transition: width 0.3s ease-in-out;
         }
         .link-underline:hover::after { width: 100%; }
+
+        /* 关闭渐变时，链接下划线也恢复纯色 */
+        body.no-gradient .link-underline::after {
+            background: #4f46e5 !important;
+        }
     </style>
 </head>
 <body>
@@ -127,58 +128,86 @@
         <!-- 渐变开关按钮 -->
         <button id="gradientToggle" class="toggle-btn">🎨 关闭渐变</button>
 
-        <!-- 标题示例：使用 color1 和 color2 自定义渐变 -->
-        <h3><span class="gradient" color1="#1e3a8a" color2="#60a5fa">点击按钮可统一开关所有渐变。下面演示了不同自定义颜色的渐变标题。</span></h3>
+        <h1>👋 <span class="gradient" color1="#1e3a8a" color2="#60a5fa">欢迎来到我的网站</span></h1>
+        <p>点击按钮可统一开关所有渐变。链接下划线也会跟随渐变色。</p>
 
-        <!-- 卡片展示区 -->
-        <h2><span class="gradient" color1="#4f46e5" color2="#a78bfa">自定义卡片位置</span></h2>
+        <h2><span class="gradient" color1="#4f46e5" color2="#a78bfa">自定义卡片与链接</span></h2>
         <div class="card-grid">
-            <!-- 卡片1：红→橙渐变 -->
+            <!-- 卡片1：红→橙 -->
             <div class="card">
                 <h3><span class="gradient" color1="#ff0000" color2="#ff8800">红橙渐变卡片</span></h3>
-                <p>使用 color1="#ff0000" color2="#ff8800"</p>
-                <a href="#" class="link-underline">了解详情 →</a>
+                <p>链接下划线也会是红橙渐变。</p>
+                <!-- 链接使用相同的颜色属性 -->
+                <a href="#" class="link-underline" color1="#ff0000" color2="#ff8800">了解详情 →</a>
             </div>
-            <!-- 卡片2：绿→青渐变 -->
+            <!-- 卡片2：绿→青 -->
             <div class="card">
                 <h3><span class="gradient" color1="#00aa55" color2="#00ddcc">绿青渐变卡片</span></h3>
-                <p>使用 color1="#00aa55" color2="#00ddcc"</p>
-                <a href="#" class="link-underline">查看示例 →</a>
+                <p>链接下划线也会是绿青渐变。</p>
+                <a href="#" class="link-underline" color1="#00aa55" color2="#00ddcc">查看示例 →</a>
             </div>
-            <!-- 卡片3：紫→粉渐变 -->
+            <!-- 卡片3：紫→粉 -->
             <div class="card">
                 <h3><span class="gradient" color1="#8800aa" color2="#ff44aa">紫粉渐变卡片</span></h3>
-                <p>使用 color1="#8800aa" color2="#ff44aa"</p>
-                <a href="#" class="link-underline">了解更多 →</a>
+                <p>链接下划线也会是紫粉渐变。</p>
+                <a href="#" class="link-underline" color1="#8800aa" color2="#ff44aa">了解更多 →</a>
             </div>
         </div>
 
-        <!-- 默认渐变示例（不写 color1 color2） -->
-        <h2>默认渐变标题</h2>
+        <!-- 默认渐变示例 -->
+        <h2>默认渐变链接</h2>
         <div class="card-grid left">
             <div class="card wide">
-                <h3><span class="gradient">使用默认渐变色（深蓝→浅蓝）</span></h3>
-                <p>没有写 color1 和 color2 属性，自动使用 CSS 默认值。</p>
+                <h3><span class="gradient">使用默认渐变色</span></h3>
+                <p>没有写 color1 和 color2，自动使用默认的深蓝到浅蓝。</p>
+                <a href="#" class="link-underline">这是一个默认链接 →</a>
             </div>
         </div>
     </div>
 
     <script>
-        // ========== 1. 处理自定义渐变色 ==========
-        function applyCustomGradients() {
-            const gradientEls = document.querySelectorAll('.gradient');
-            gradientEls.forEach(el => {
-                const color1 = el.getAttribute('color1');
-                const color2 = el.getAttribute('color2');
-                if (color1 && color2) {
-                    el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
-                    el.style.webkitBackgroundClip = 'text';
-                    el.style.backgroundClip = 'text';
-                    el.style.webkitTextFillColor = 'transparent';
-                    el.style.color = 'transparent';
-                }
-            });
+        // ========== 1. 应用自定义渐变色（文字 + 链接下划线） ==========
+        // ========== 1. 应用自定义渐变色（文字 + 链接下划线） ==========
+function applyCustomGradients() {
+    // 处理所有带 .gradient 的文字元素
+    const gradientEls = document.querySelectorAll('.gradient');
+    gradientEls.forEach(el => {
+        const color1 = el.getAttribute('color1');
+        const color2 = el.getAttribute('color2');
+        if (color1 && color2) {
+            el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+            el.style.webkitBackgroundClip = 'text';
+            el.style.backgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
+            el.style.color = 'transparent';
         }
+    });
+
+    // 处理所有带 .link-underline 的链接，只给下划线加渐变
+    const linkEls = document.querySelectorAll('.link-underline');
+    linkEls.forEach(link => {
+        const color1 = link.getAttribute('color1');
+        const color2 = link.getAttribute('color2');
+        if (color1 && color2) {
+            // 只给下划线设置渐变参数，不改文字颜色
+            link.style.setProperty('--underline-color1', color1);
+            link.style.setProperty('--underline-color2', color2);
+            link.classList.add('custom-underline');
+        }
+    });
+
+    // 为自定义下划线动态添加样式
+    if (!document.getElementById('dynamic-underline-style')) {
+        const styleTag = document.createElement('style');
+        styleTag.id = 'dynamic-underline-style';
+        styleTag.textContent = `
+            .link-underline.custom-underline::after {
+                background: linear-gradient(135deg, var(--underline-color1) 0%, var(--underline-color2) 100%) !important;
+            }
+        `;
+        document.head.appendChild(styleTag);
+    }
+}
 
         // ========== 2. 渐变开关逻辑（含 localStorage） ==========
         const toggleBtn = document.getElementById('gradientToggle');

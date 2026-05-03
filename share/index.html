@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的网站 - 分享留言</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+            line-height: 1.7;
+            color: #334155;
+            background-color: #f0f9ff;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container { width: 100%; max-width: 800px; margin: 0 auto; padding: 2rem; }
+
+        /* ========== 顶部导航栏 ========== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .navbar .logo { font-size: 1.3rem; font-weight: 700; color: #1e293b; text-decoration: none; }
+        .navbar .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .navbar .nav-links a {
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .navbar .nav-links a:hover { background: #f1f5f9; color: #1e293b; }
+        .navbar .nav-links a.active { background: #4f46e5; color: #fff; }
+
+        /* ========== 标题与卡片 ========== */
+        h1, h2, h3 { line-height: 1.3; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
+        h1 { font-size: 2.5rem; }
+        h3 { font-size: 1.5rem; margin-top: 0; }
+
+        .gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .input-area { display: flex; gap: 12px; margin: 1.5rem 0; }
+        .input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fff;
+            transition: all 0.2s ease;
+        }
+        .input-area input:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+        .input-area button {
+            padding: 12px 24px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .input-area button:hover { background: #4338ca; }
+
+        .message-list { list-style: none; padding: 0; }
+        .message-list li {
+            background: #f8fafc;
+            margin-bottom: 0.8rem;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        .share-link-box {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- ========== 顶部导航栏 ========== -->
+    <nav class="navbar">
+        <a href="/" class="logo">✨ 我的网站</a>
+        <div class="nav-links">
+            <a href="/">🏠 主页</a>
+            <a href="/share" class="active">📤 分享留言</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>👋 <span class="gradient" color1="#1e3a8a" color2="#60a5fa">手动分享留言</span></h1>
+        <p>在这里写留言，生成链接发给朋友，朋友打开就能看到。</p>
+
+        <div class="input-area">
+            <input type="text" id="messageInput" placeholder="写下你想分享的内容..." />
+            <button id="shareBtn">生成分享链接</button>
+        </div>
+
+        <div id="shareArea" class="card hidden">
+            <h3>🔗 你的分享链接</h3>
+            <p>复制下面的链接，发给你的朋友：</p>
+            <div id="shareLink" class="share-link-box"></div>
+            <button id="copyBtn" style="margin-top:0.5rem; padding:8px 16px; background:#10b981; color:white; border:none; border-radius:8px; cursor:pointer;">复制链接</button>
+        </div>
+
+        <div class="card">
+            <h3>📋 收到的留言</h3>
+            <ul id="messageList" class="message-list">
+                <li>还没有收到任何留言。</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // 自定义渐变色
+        document.querySelectorAll('.gradient').forEach(el => {
+            const color1 = el.getAttribute('color1');
+            const color2 = el.getAttribute('color2');
+            if (color1 && color2) {
+                el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+                el.style.webkitBackgroundClip = 'text';
+                el.style.backgroundClip = 'text';
+                el.style.webkitTextFillColor = 'transparent';
+                el.style.color = 'transparent';
+            }
+        });
+
+        const messageInput = document.getElementById('messageInput');
+        const shareBtn = document.getElementById('shareBtn');
+        const shareArea = document.getElementById('shareArea');
+        const shareLink = document.getElementById('shareLink');
+        const copyBtn = document.getElementById('copyBtn');
+        const messageList = document.getElementById('messageList');
+
+        // 生成分享链接
+        shareBtn.addEventListener('click', () => {
+            const text = messageInput.value.trim();
+            if (!text) return alert('请先输入内容！');
+            const encodedText = btoa(unescape(encodeURIComponent(text)));
+            const currentUrl = window.location.href.split('?')[0];
+            const shareUrl = `${currentUrl}?msg=${encodedText}`;
+            shareLink.textContent = shareUrl;
+            shareArea.classList.remove('hidden');
+        });
+
+        // 复制链接
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(shareLink.textContent).then(() => alert('链接已复制！'));
+        });
+
+        // 加载分享的留言
+        function loadSharedMessage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedMsg = urlParams.get('msg');
+            if (encodedMsg) {
+                try {
+                    const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
+                    messageList.innerHTML = `<li>${escapeHtml(decodedText)}</li>`;
+                } catch (e) {
+                    messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
+                }
+            }
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        loadSharedMessage();
+    </script>
+
+</body>
+</html>

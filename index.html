@@ -3,24 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的网站 - 手动分享版</title>
+    <title>我的网站 - 主页</title>
     <style>
-        /* 保留了之前所有现代化样式 */
+        /* ========== 全局样式 ========== */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
             line-height: 1.7;
             color: #334155;
             background-color: #f0f9ff;
             min-height: 100vh;
-            padding: 2rem;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1, h2, h3 { line-height: 1.3; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
+        img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
+        input, button, textarea, select { font: inherit; color: inherit; }
+        p { margin-bottom: 1rem; }
+        ul, ol { list-style: none; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 2rem; }
+
+        /* ========== 顶部导航栏 ========== */
+        .navbar {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .navbar .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e293b;
+            text-decoration: none;
+        }
+        .navbar .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .navbar .nav-links a {
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .navbar .nav-links a:hover { background: #f1f5f9; color: #1e293b; }
+        .navbar .nav-links a.active { background: #4f46e5; color: #fff; }
+
+        /* ========== 标题样式 ========== */
+        h1, h2, h3, h4, h5 { line-height: 1.3; font-weight: 700; color: #1e293b; margin-bottom: 0.5rem; }
         h1 { font-size: 2.5rem; }
-        
+        h2 { font-size: 1.8rem; margin-top: 2rem; }
+        h3 { font-size: 1.5rem; }
+
+        /* ========== 渐变文字类 ========== */
         .gradient {
             background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%);
             -webkit-background-clip: text;
@@ -28,157 +71,187 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
         }
-
-        .card {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.02);
+        body.no-gradient .gradient {
+            background: none !important;
+            -webkit-text-fill-color: #1e293b !important;
+            color: #1e293b !important;
         }
 
-        .input-area {
-            display: flex;
-            gap: 12px;
-            margin: 1.5rem 0;
-        }
-        .input-area input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            background: #fff;
-            transition: all 0.2s ease;
-        }
-        .input-area input:focus {
-            outline: none;
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-        .input-area button {
-            padding: 12px 24px;
+        /* ========== 开关按钮 ========== */
+        .toggle-btn {
+            display: inline-block;
+            padding: 0.6rem 1.8rem;
             background: #4f46e5;
-            color: white;
+            color: #fff;
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             font-weight: 600;
             cursor: pointer;
+            margin-bottom: 1rem;
             transition: background 0.2s ease;
         }
-        .input-area button:hover { background: #4338ca; }
+        .toggle-btn:hover { background: #4338ca; }
 
-        .message-list {
-            list-style: none;
-            padding: 0;
-        }
-        .message-list li {
-            background: #f8fafc;
-            margin-bottom: 0.8rem;
-            padding: 14px 18px;
-            border-radius: 10px;
-            font-size: 1rem;
-            color: #334155;
-        }
+        /* ========== 卡片网格 ========== */
+        .card-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem; }
+        .card-grid.left { justify-content: flex-start; }
 
-        .share-link-box {
-            background: #f1f5f9;
-            padding: 1rem;
-            border-radius: 8px;
-            word-break: break-all;
-            font-family: monospace;
-            font-size: 0.9rem;
-            margin: 1rem 0;
+        /* ========== 卡片样式 ========== */
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            flex: 0 1 300px;
         }
-        .hidden { display: none; }
+        .card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); transform: translateY(-4px); }
+        .card.wide { flex-basis: 100%; }
+
+        /* ========== 链接下划线特效 ========== */
+        .link-underline {
+            position: relative;
+            text-decoration: none;
+            color: #4f46e5;
+            font-weight: 500;
+            padding-bottom: 2px;
+        }
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #4f46e5;
+            transition: width 0.3s ease-in-out;
+        }
+        .link-underline:hover::after { width: 100%; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>👋 <span class="gradient">手动分享留言</span></h1>
-    <p>在这里写留言，然后生成一个链接发给朋友。朋友打开链接就能看到你的留言。</p>
+    <!-- ========== 顶部导航栏 ========== -->
+    <nav class="navbar">
+        <a href="/" class="logo">✨ 我的网站</a>
+        <div class="nav-links">
+            <a href="/" class="active">🏠 主页</a>
+            <a href="/share">📤 分享留言</a>
+        </div>
+    </nav>
 
-    <div class="input-area">
-        <input type="text" id="messageInput" placeholder="写下你想分享的内容..." />
-        <button id="shareBtn">生成分享链接</button>
+    <!-- ========== 主页内容 ========== -->
+    <div class="container">
+        <button id="gradientToggle" class="toggle-btn">🎨 关闭渐变</button>
+
+        <h1>👋 <span class="gradient" color1="#1e3a8a" color2="#60a5fa">欢迎来到我的网站</span></h1>
+        <p>点击按钮可统一开关所有渐变。导航栏可切换到分享留言页面。</p>
+
+        <h2><span class="gradient" color1="#4f46e5" color2="#a78bfa">自定义卡片与链接</span></h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3><span class="gradient" color1="#ff0000" color2="#ff8800">红橙渐变卡片</span></h3>
+                <p>链接下划线也会是红橙渐变。</p>
+                <a href="#" class="link-underline" color1="#ff0000" color2="#ff8800">了解详情 →</a>
+            </div>
+            <div class="card">
+                <h3><span class="gradient" color1="#00aa55" color2="#00ddcc">绿青渐变卡片</span></h3>
+                <p>链接下划线也会是绿青渐变。</p>
+                <a href="#" class="link-underline" color1="#00aa55" color2="#00ddcc">查看示例 →</a>
+            </div>
+            <div class="card">
+                <h3><span class="gradient" color1="#8800aa" color2="#ff44aa">紫粉渐变卡片</span></h3>
+                <p>链接下划线也会是紫粉渐变。</p>
+                <a href="#" class="link-underline" color1="#8800aa" color2="#ff44aa">了解更多 →</a>
+            </div>
+        </div>
+
+        <h2>默认渐变链接</h2>
+        <div class="card-grid left">
+            <div class="card wide">
+                <h3><span class="gradient">使用默认渐变色</span></h3>
+                <p>没有写 color1 和 color2，自动使用默认的深蓝到浅蓝。</p>
+                <a href="#" class="link-underline">这是一个默认链接 →</a>
+            </div>
+        </div>
     </div>
 
-    <!-- 生成的分享链接会显示在这里 -->
-    <div id="shareArea" class="card hidden">
-        <h3>🔗 你的分享链接</h3>
-        <p>复制下面的链接，发给你的朋友：</p>
-        <div id="shareLink" class="share-link-box"></div>
-        <button id="copyBtn" style="margin-top:0.5rem; padding:8px 16px; background:#10b981; color:white; border:none; border-radius:8px; cursor:pointer;">复制链接</button>
-    </div>
+    <script>
+        // ========== 1. 自定义渐变色 ==========
+        function applyCustomGradients() {
+            document.querySelectorAll('.gradient').forEach(el => {
+                const color1 = el.getAttribute('color1');
+                const color2 = el.getAttribute('color2');
+                if (color1 && color2) {
+                    el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+                    el.style.webkitBackgroundClip = 'text';
+                    el.style.backgroundClip = 'text';
+                    el.style.webkitTextFillColor = 'transparent';
+                    el.style.color = 'transparent';
+                }
+            });
 
-    <!-- 展示从链接加载的留言 -->
-    <div class="card">
-        <h3>📋 收到的留言</h3>
-        <ul id="messageList" class="message-list">
-            <li>还没有收到任何留言。</li>
-        </ul>
-    </div>
-</div>
+            document.querySelectorAll('.link-underline').forEach(link => {
+                const color1 = link.getAttribute('color1');
+                const color2 = link.getAttribute('color2');
+                if (color1 && color2) {
+                    link.style.setProperty('--underline-color1', color1);
+                    link.style.setProperty('--underline-color2', color2);
+                    link.classList.add('custom-underline');
+                }
+            });
 
-<script>
-    const messageInput = document.getElementById('messageInput');
-    const shareBtn = document.getElementById('shareBtn');
-    const shareArea = document.getElementById('shareArea');
-    const shareLink = document.getElementById('shareLink');
-    const copyBtn = document.getElementById('copyBtn');
-    const messageList = document.getElementById('messageList');
-
-    // 生成分享链接
-    shareBtn.addEventListener('click', () => {
-        const text = messageInput.value.trim();
-        if (!text) return alert('请先输入内容！');
-
-        // 将留言内容用 Base64 编码，并添加到当前网址后面
-        const encodedText = btoa(unescape(encodeURIComponent(text)));
-        const currentUrl = window.location.href.split('?')[0]; // 移除已有的查询参数
-        const shareUrl = `${currentUrl}?msg=${encodedText}`;
-        
-        shareLink.textContent = shareUrl;
-        shareArea.classList.remove('hidden');
-    });
-
-    // 复制链接
-    copyBtn.addEventListener('click', () => {
-        const range = document.createRange();
-        range.selectNode(shareLink);
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(range);
-        document.execCommand('copy');
-        alert('链接已复制！');
-    });
-
-    // 页面加载时，检查网址里有没有留言
-    function loadSharedMessage() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedMsg = urlParams.get('msg');
-        
-        if (encodedMsg) {
-            try {
-                const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
-                messageList.innerHTML = `<li>${escapeHtml(decodedText)}</li>`;
-            } catch (e) {
-                messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
+            if (!document.getElementById('dynamic-underline-style')) {
+                const styleTag = document.createElement('style');
+                styleTag.id = 'dynamic-underline-style';
+                styleTag.textContent = `.link-underline.custom-underline::after { background: linear-gradient(135deg, var(--underline-color1) 0%, var(--underline-color2) 100%) !important; }`;
+                document.head.appendChild(styleTag);
             }
-        } else {
-            messageList.innerHTML = '<li>还没有收到任何留言。</li>';
         }
-    }
 
-    // 安全过滤
-    function escapeHtml(text) {
-        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
+        // ========== 2. 渐变开关 ==========
+        const toggleBtn = document.getElementById('gradientToggle');
+        const body = document.body;
 
-    // 页面加载时执行
-    loadSharedMessage();
-</script>
+        function loadPreference() {
+            const saved = localStorage.getItem('gradientPreference');
+            if (saved === 'off') {
+                body.classList.add('no-gradient');
+                toggleBtn.textContent = '✨ 开启渐变';
+            } else {
+                body.classList.remove('no-gradient');
+                toggleBtn.textContent = '🎨 关闭渐变';
+            }
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('no-gradient');
+            if (body.classList.contains('no-gradient')) {
+                toggleBtn.textContent = '✨ 开启渐变';
+                localStorage.setItem('gradientPreference', 'off');
+            } else {
+                toggleBtn.textContent = '🎨 关闭渐变';
+                localStorage.setItem('gradientPreference', 'on');
+            }
+        });
+
+        // ========== 3. 导航栏高亮当前页面 ==========
+        (function highlightNav() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        })();
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyCustomGradients();
+            loadPreference();
+        });
+    </script>
 
 </body>
 </html>

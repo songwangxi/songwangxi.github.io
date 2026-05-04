@@ -1,4 +1,4 @@
-const WORKER_URL = 'https://restless-lab-4f46.songwei315.workers.dev/';
+const WORKER_URL = 'https://restless-lab-4f46.songwei315.workers.dev';
 // ========== 1. 自定义渐变色（文字 + 链接下划线） ==========
 function applyCustomGradients() {
     document.querySelectorAll('.gradient').forEach(el => {

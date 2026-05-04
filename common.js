@@ -193,7 +193,7 @@ function bindShareFunction() {
             }
         }
     }
-    loadSharedMessage();
+    loadSharedMessage(); 
 }
 
 // ========== 初始化 ==========

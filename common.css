@@ -69,17 +69,17 @@ body.no-gradient .gradient {
 .toggle-btn {
     display: inline-block;
     padding: 0.6rem 1.8rem;
-    background: #4f46e5;
+    background: #4f46e5;   /* 保留作为默认色，没写 color1/color2 时用这个 */
     color: #fff;
     border: none;
     border-radius: 50px;
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 1rem;
-    transition: background 0.2s ease;
+    transition: opacity 0.2s ease;
 }
-.toggle-btn:hover { background: #4338ca; }
-.toggle-btn.active { background: #94a3b8; }
+.toggle-btn:hover { opacity: 0.9; }
+.toggle-btn.active { opacity: 0.6; }
 
 /* ========== 卡片样式 ========== */
 .card-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem; }

@@ -1,4 +1,3 @@
-const WORKER_URL = '/api';
 // ========== 1. 自定义渐变色（文字 + 链接下划线） ==========
 function applyCustomGradients() {
     document.querySelectorAll('.gradient').forEach(el => {
@@ -49,7 +48,6 @@ function loadGradientPreference() {
     } else {
         body.classList.remove('no-gradient');
     }
-    // 按钮更新独立处理，不存在就跳过
     const btn = document.getElementById('gradientToggle');
     if (btn) {
         if (saved === 'off') {
@@ -101,6 +99,7 @@ function loadButtonGradientPreference() {
         }
     }
 }
+
 function syncPreferences() {
     const body = document.body;
     localStorage.setItem('gradientPreference', body.classList.contains('no-gradient') ? 'off' : 'on');
@@ -113,8 +112,8 @@ function bindToggleButtons() {
     const gradientToggle = document.getElementById('gradientToggle');
     const underlineToggle = document.getElementById('underlineToggle');
     const buttonGradientToggle = document.getElementById('buttonGradientToggle');
-    
     const body = document.body;
+
     if (gradientToggle) {
         gradientToggle.addEventListener('click', () => {
             body.classList.toggle('no-gradient');
@@ -142,20 +141,20 @@ function bindToggleButtons() {
             syncPreferences();
         });
     }
-   
+
     if (buttonGradientToggle) {
         buttonGradientToggle.addEventListener('click', () => {
-        body.classList.toggle('no-button-gradient');
-        if (body.classList.contains('no-button-gradient')) {
-            buttonGradientToggle.textContent = '开启按钮渐变';
-            buttonGradientToggle.classList.add('active');
-        } else {
-            buttonGradientToggle.textContent = '关闭按钮渐变';
-            buttonGradientToggle.classList.remove('active');
-        }
-        syncPreferences();
-    });
-}
+            body.classList.toggle('no-button-gradient');
+            if (body.classList.contains('no-button-gradient')) {
+                buttonGradientToggle.textContent = '开启按钮渐变';
+                buttonGradientToggle.classList.add('active');
+            } else {
+                buttonGradientToggle.textContent = '关闭按钮渐变';
+                buttonGradientToggle.classList.remove('active');
+            }
+            syncPreferences();
+        });
+    }
 }
 
 // ========== 5. 导航栏高亮 ==========
@@ -166,19 +165,15 @@ function highlightNav() {
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
         const href = link.getAttribute('href');
-
-        // 1. 优先完全匹配
         if (href === currentPath) {
             matchedLink = link;
         }
     });
 
-    // 2. 如果没有完全匹配，寻找最长的前缀匹配（父级菜单高亮）
     if (!matchedLink) {
         let longestMatch = '';
         document.querySelectorAll('.nav-links a').forEach(link => {
             const href = link.getAttribute('href');
-            // 必须以 / 结尾的父路径，避免 /share 误匹配 /shareholder
             if (href !== '/' && currentPath.startsWith(href) && href.length > longestMatch.length) {
                 matchedLink = link;
                 longestMatch = href;
@@ -186,13 +181,12 @@ function highlightNav() {
         });
     }
 
-    // 应用高亮
     if (matchedLink) {
         matchedLink.classList.add('active');
     }
 }
 
-// ========== 6. 分享留言功能 ==========
+// ========== 6. 分享页面功能（纯链接分享，无需后端） ==========
 function bindShareFunction() {
     const messageInput = document.getElementById('messageInput');
     const shareBtn = document.getElementById('shareBtn');
@@ -202,11 +196,8 @@ function bindShareFunction() {
     const messageList = document.getElementById('messageList');
 
     if (!shareBtn) return;
-const sendBtn = document.getElementById('sendBtn');
-if (sendBtn) {
-    sendBtn.addEventListener('click', sendMessage);
-}
-    // 生成分享链接（保留原有功能）
+
+    // 生成分享链接
     shareBtn.addEventListener('click', () => {
         const text = messageInput.value.trim();
         if (!text) return alert('请先输入内容！');
@@ -217,58 +208,32 @@ if (sendBtn) {
         shareArea.classList.remove('hidden');
     });
 
+    // 复制链接
     if (copyBtn) {
         copyBtn.addEventListener('click', () => {
             navigator.clipboard.writeText(shareLink.textContent).then(() => alert('链接已复制！'));
         });
     }
 
-    // 加载留言（从 Cloudflare Worker 获取）
-    async function loadMessages() {
-        try {
-            const res = await fetch(WORKER_URL);
-            const messages = await res.json();
-            if (messages.length === 0) {
-                messageList.innerHTML = '<li>还没有留言，来写第一条吧！</li>';
-                return;
+    // 从链接加载留言
+    function loadSharedMessage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedMsg = urlParams.get('msg');
+        if (encodedMsg) {
+            try {
+                const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
+                messageList.innerHTML = `<li>${escapeHtml(decodedText)}</li>`;
+            } catch (e) {
+                messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
             }
-            messageList.innerHTML = messages.map(msg => 
-                `<li>${escapeHtml(msg.text)}</li>`
-            ).join('');
-        } catch (e) {
-            messageList.innerHTML = '<li>加载失败，请稍后再试。</li>';
         }
     }
 
-    // 发送留言到 Cloudflare Worker
-    async function sendMessage() {
-        const text = messageInput.value.trim();
-        if (!text) return;
-        try {
-            await fetch(WORKER_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text })
-            });
-            messageInput.value = '';
-            loadMessages();
-        } catch (e) {
-            alert('发送失败，请稍后再试。');
-        }
+    function escapeHtml(text) {
+        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // 给输入框绑定回车键发送
-    messageInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-
-    // 每3秒自动刷新
-    setInterval(loadMessages, 3000);
-    loadMessages();
-}
-
-function escapeHtml(text) {
-    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    loadSharedMessage();
 }
 
 // ========== 初始化 ==========
@@ -277,7 +242,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyButtonColors();
     loadGradientPreference();
     loadUnderlinePreference();
-    loadButtonGradientPreference();   // ← 加上
+    loadButtonGradientPreference();
     bindToggleButtons();
     highlightNav();
     bindShareFunction();

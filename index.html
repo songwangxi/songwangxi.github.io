@@ -95,7 +95,10 @@
         /* ========== 卡片网格 ========== */
         .card-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem; }
         .card-grid.left { justify-content: flex-start; }
-
+        .card-grid.stretch .card {
+            flex: 1 1 0;   /* 让每张卡片平均分配可用空间 */
+            min-width: 250px; /* 保证卡片不会太窄 */
+        }
         /* ========== 卡片样式 ========== */
         .card {
             background: #ffffff;

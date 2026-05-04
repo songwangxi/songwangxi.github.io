@@ -52,10 +52,10 @@ function loadGradientPreference() {
     const btn = document.getElementById('gradientToggle');
     if (btn) {
         if (saved === 'off') {
-            btn.textContent = '✨ 开启文字渐变';
+            btn.textContent = '开启文字渐变';
             btn.classList.add('active');
         } else {
-            btn.textContent = '🎨 关闭文字渐变';
+            btn.textContent = '关闭文字渐变';
             btn.classList.remove('active');
         }
     }
@@ -72,10 +72,10 @@ function loadUnderlinePreference() {
     const btn = document.getElementById('underlineToggle');
     if (btn) {
         if (saved === 'off') {
-            btn.textContent = '✨ 开启下划线渐变';
+            btn.textContent = '开启下划线渐变';
             btn.classList.add('active');
         } else {
-            btn.textContent = '📏 关闭下划线渐变';
+            btn.textContent = '关闭下划线渐变';
             btn.classList.remove('active');
         }
     }
@@ -92,10 +92,10 @@ function loadButtonGradientPreference() {
     const btn = document.getElementById('buttonGradientToggle');
     if (btn) {
         if (saved === 'off') {
-            btn.textContent = '✨ 开启按钮渐变';
+            btn.textContent = '开启按钮渐变';
             btn.classList.add('active');
         } else {
-            btn.textContent = '🔘 关闭按钮渐变';
+            btn.textContent = '关闭按钮渐变';
             btn.classList.remove('active');
         }
     }
@@ -118,10 +118,10 @@ function bindToggleButtons() {
         gradientToggle.addEventListener('click', () => {
             body.classList.toggle('no-gradient');
             if (body.classList.contains('no-gradient')) {
-                gradientToggle.textContent = '✨ 开启文字渐变';
+                gradientToggle.textContent = '开启文字渐变';
                 gradientToggle.classList.add('active');
             } else {
-                gradientToggle.textContent = '🎨 关闭文字渐变';
+                gradientToggle.textContent = '关闭文字渐变';
                 gradientToggle.classList.remove('active');
             }
             syncPreferences();
@@ -132,10 +132,10 @@ function bindToggleButtons() {
         underlineToggle.addEventListener('click', () => {
             body.classList.toggle('no-underline');
             if (body.classList.contains('no-underline')) {
-                underlineToggle.textContent = '✨ 开启下划线渐变';
+                underlineToggle.textContent = '开启下划线渐变';
                 underlineToggle.classList.add('active');
             } else {
-                underlineToggle.textContent = '📏 关闭下划线渐变';
+                underlineToggle.textContent = '关闭下划线渐变';
                 underlineToggle.classList.remove('active');
             }
             syncPreferences();
@@ -146,10 +146,10 @@ function bindToggleButtons() {
         buttonGradientToggle.addEventListener('click', () => {
         body.classList.toggle('no-button-gradient');
         if (body.classList.contains('no-button-gradient')) {
-            buttonGradientToggle.textContent = '✨ 开启按钮渐变';
+            buttonGradientToggle.textContent = '开启按钮渐变';
             buttonGradientToggle.classList.add('active');
         } else {
-            buttonGradientToggle.textContent = '🔘 关闭按钮渐变';
+            buttonGradientToggle.textContent = '关闭按钮渐变';
             buttonGradientToggle.classList.remove('active');
         }
         syncPreferences();

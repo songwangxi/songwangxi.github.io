@@ -76,6 +76,10 @@
             -webkit-text-fill-color: #1e293b !important;
             color: #1e293b !important;
         }
+        /* 单独关闭下划线渐变 */
+        body.no-underline .link-underline::after {
+            background: #4f46e5 !important;
+        }
 
         /* ========== 开关按钮 ========== */
         .toggle-btn {
@@ -90,11 +94,23 @@
             margin-bottom: 1rem;
             transition: background 0.2s ease;
         }
-        .toggle-btn:hover { background: #4338ca; }
-
+        .toggle-btn:hover { 
+            background: #4338ca; 
+        }
+        .toggle-btn.active {
+            background: #94a3b8;
+        }
         /* ========== 卡片网格 ========== */
-        .card-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem; }
-        .card-grid.left { justify-content: flex-start; }
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        .card-grid.left { 
+            justify-content: flex-start; 
+        }
         .card-grid.stretch .card {
             flex: 1 1 0;   /* 让每张卡片平均分配可用空间 */
             min-width: 250px; /* 保证卡片不会太窄 */
@@ -108,8 +124,13 @@
             transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             flex: 0 1 300px;
         }
-        .card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.08); transform: translateY(-4px); }
-        .card.wide { flex-basis: 100%; }
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
+        }
+        .card.wide {
+            flex-basis: 100%;
+        }
 
         /* ========== 链接下划线特效 ========== */
         .link-underline {
@@ -146,7 +167,8 @@
 
     <!-- ========== 主页内容 ========== -->
     <div class="container">
-        <button id="gradientToggle" class="toggle-btn">🎨 关闭渐变</button>
+        <button id="gradientToggle" class="toggle-btn">🎨 关闭文字渐变</button>
+        <button id="underlineToggle" class="toggle-btn">📏 关闭下划线渐变</button>
 
         <h1>👋 <span class="gradient" color1="#1e3a8a" color2="#60a5fa">欢迎来到我的网站</span></h1>
         <p>点击按钮可统一开关所有渐变。导航栏可切换到分享留言页面。</p>
@@ -181,80 +203,115 @@
     </div>
 
     <script>
-        // ========== 1. 自定义渐变色 ==========
-        function applyCustomGradients() {
-            document.querySelectorAll('.gradient').forEach(el => {
-                const color1 = el.getAttribute('color1');
-                const color2 = el.getAttribute('color2');
-                if (color1 && color2) {
-                    el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
-                    el.style.webkitBackgroundClip = 'text';
-                    el.style.backgroundClip = 'text';
-                    el.style.webkitTextFillColor = 'transparent';
-                    el.style.color = 'transparent';
-                }
-            });
-
-            document.querySelectorAll('.link-underline').forEach(link => {
-                const color1 = link.getAttribute('color1');
-                const color2 = link.getAttribute('color2');
-                if (color1 && color2) {
-                    link.style.setProperty('--underline-color1', color1);
-                    link.style.setProperty('--underline-color2', color2);
-                    link.classList.add('custom-underline');
-                }
-            });
-
-            if (!document.getElementById('dynamic-underline-style')) {
-                const styleTag = document.createElement('style');
-                styleTag.id = 'dynamic-underline-style';
-                styleTag.textContent = `.link-underline.custom-underline::after { background: linear-gradient(135deg, var(--underline-color1) 0%, var(--underline-color2) 100%) !important; }`;
-                document.head.appendChild(styleTag);
-            }
-        }
-
-        // ========== 2. 渐变开关 ==========
-        const toggleBtn = document.getElementById('gradientToggle');
-        const body = document.body;
-
-        function loadPreference() {
-            const saved = localStorage.getItem('gradientPreference');
-            if (saved === 'off') {
-                body.classList.add('no-gradient');
-                toggleBtn.textContent = '✨ 开启渐变';
-            } else {
-                body.classList.remove('no-gradient');
-                toggleBtn.textContent = '🎨 关闭渐变';
-            }
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            body.classList.toggle('no-gradient');
-            if (body.classList.contains('no-gradient')) {
-                toggleBtn.textContent = '✨ 开启渐变';
-                localStorage.setItem('gradientPreference', 'off');
-            } else {
-                toggleBtn.textContent = '🎨 关闭渐变';
-                localStorage.setItem('gradientPreference', 'on');
+    // ========== 1. 自定义渐变色 ==========
+    function applyCustomGradients() {
+        document.querySelectorAll('.gradient').forEach(el => {
+            const color1 = el.getAttribute('color1');
+            const color2 = el.getAttribute('color2');
+            if (color1 && color2) {
+                el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+                el.style.webkitBackgroundClip = 'text';
+                el.style.backgroundClip = 'text';
+                el.style.webkitTextFillColor = 'transparent';
+                el.style.color = 'transparent';
             }
         });
 
-        // ========== 3. 导航栏高亮当前页面 ==========
-        (function highlightNav() {
-            const currentPath = window.location.pathname;
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
-                }
-            });
-        })();
-
-        window.addEventListener('DOMContentLoaded', () => {
-            applyCustomGradients();
-            loadPreference();
+        document.querySelectorAll('.link-underline').forEach(link => {
+            const color1 = link.getAttribute('color1');
+            const color2 = link.getAttribute('color2');
+            if (color1 && color2) {
+                link.style.setProperty('--underline-color1', color1);
+                link.style.setProperty('--underline-color2', color2);
+                link.classList.add('custom-underline');
+            }
         });
-    </script>
+
+        if (!document.getElementById('dynamic-underline-style')) {
+            const styleTag = document.createElement('style');
+            styleTag.id = 'dynamic-underline-style';
+            styleTag.textContent = `.link-underline.custom-underline::after { background: linear-gradient(135deg, var(--underline-color1) 0%, var(--underline-color2) 100%) !important; }`;
+            document.head.appendChild(styleTag);
+        }
+    }
+
+    // ========== 2. 文字渐变开关 ==========
+    const gradientToggle = document.getElementById('gradientToggle');
+    const body = document.body;
+
+    function loadGradientPreference() {
+        const saved = localStorage.getItem('gradientPreference');
+        if (saved === 'off') {
+            body.classList.add('no-gradient');
+            gradientToggle.textContent = '✨ 开启文字渐变';
+            gradientToggle.classList.add('active');
+        } else {
+            body.classList.remove('no-gradient');
+            gradientToggle.textContent = '🎨 关闭文字渐变';
+            gradientToggle.classList.remove('active');
+        }
+    }
+
+    gradientToggle.addEventListener('click', () => {
+        body.classList.toggle('no-gradient');
+        if (body.classList.contains('no-gradient')) {
+            gradientToggle.textContent = '✨ 开启文字渐变';
+            gradientToggle.classList.add('active');
+            localStorage.setItem('gradientPreference', 'off');
+        } else {
+            gradientToggle.textContent = '🎨 关闭文字渐变';
+            gradientToggle.classList.remove('active');
+            localStorage.setItem('gradientPreference', 'on');
+        }
+    });
+
+    // ========== 3. 下划线渐变开关 ==========
+    const underlineToggle = document.getElementById('underlineToggle');
+
+    function loadUnderlinePreference() {
+        const saved = localStorage.getItem('underlinePreference');
+        if (saved === 'off') {
+            body.classList.add('no-underline');
+            underlineToggle.textContent = '✨ 开启下划线渐变';
+            underlineToggle.classList.add('active');
+        } else {
+            body.classList.remove('no-underline');
+            underlineToggle.textContent = '📏 关闭下划线渐变';
+            underlineToggle.classList.remove('active');
+        }
+    }
+
+    underlineToggle.addEventListener('click', () => {
+        body.classList.toggle('no-underline');
+        if (body.classList.contains('no-underline')) {
+            underlineToggle.textContent = '✨ 开启下划线渐变';
+            underlineToggle.classList.add('active');
+            localStorage.setItem('underlinePreference', 'off');
+        } else {
+            underlineToggle.textContent = '📏 关闭下划线渐变';
+            underlineToggle.classList.remove('active');
+            localStorage.setItem('underlinePreference', 'on');
+        }
+    });
+
+    // ========== 4. 导航栏高亮当前页面 ==========
+    (function highlightNav() {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    })();
+
+    // ========== 初始化 ==========
+    window.addEventListener('DOMContentLoaded', () => {
+        applyCustomGradients();
+        loadGradientPreference();
+        loadUnderlinePreference();
+    });
+</script>
 
 </body>
 </html>

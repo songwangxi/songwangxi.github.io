@@ -146,12 +146,35 @@ function bindToggleButtons() {
 // ========== 5. 导航栏高亮 ==========
 function highlightNav() {
     const currentPath = window.location.pathname;
+    let matchedLink = null;
+
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
+        const href = link.getAttribute('href');
+
+        // 1. 优先完全匹配
+        if (href === currentPath) {
+            matchedLink = link;
         }
     });
+
+    // 2. 如果没有完全匹配，寻找最长的前缀匹配（父级菜单高亮）
+    if (!matchedLink) {
+        let longestMatch = '';
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            const href = link.getAttribute('href');
+            // 必须以 / 结尾的父路径，避免 /share 误匹配 /shareholder
+            if (href !== '/' && currentPath.startsWith(href) && href.length > longestMatch.length) {
+                matchedLink = link;
+                longestMatch = href;
+            }
+        });
+    }
+
+    // 应用高亮
+    if (matchedLink) {
+        matchedLink.classList.add('active');
+    }
 }
 
 // ========== 6. 分享留言功能 ==========

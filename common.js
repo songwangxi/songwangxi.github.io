@@ -71,19 +71,35 @@ function loadUnderlinePreference() {
         btn.classList.remove('active');
     }
 }
-
+function loadButtonGradientPreference() {
+    const body = document.body;
+    const btn = document.getElementById('buttonGradientToggle');
+    if (!btn) return;
+    const saved = localStorage.getItem('buttonGradientPreference');
+    if (saved === 'off') {
+        body.classList.add('no-button-gradient');
+        btn.textContent = '✨ 开启按钮渐变';
+        btn.classList.add('active');
+    } else {
+        body.classList.remove('no-button-gradient');
+        btn.textContent = '🔘 关闭按钮渐变';
+        btn.classList.remove('active');
+    }
+}
 function syncPreferences() {
     const body = document.body;
     localStorage.setItem('gradientPreference', body.classList.contains('no-gradient') ? 'off' : 'on');
     localStorage.setItem('underlinePreference', body.classList.contains('no-underline') ? 'off' : 'on');
+    localStorage.setItem('buttonGradientPreference', body.classList.contains('no-button-gradient') ? 'off' : 'on');
 }
 
 // ========== 4. 绑定开关按钮事件 ==========
 function bindToggleButtons() {
     const gradientToggle = document.getElementById('gradientToggle');
     const underlineToggle = document.getElementById('underlineToggle');
+    const buttonGradientToggle = document.getElementById('buttonGradientToggle');
+    
     const body = document.body;
-
     if (gradientToggle) {
         gradientToggle.addEventListener('click', () => {
             body.classList.toggle('no-gradient');
@@ -111,6 +127,20 @@ function bindToggleButtons() {
             syncPreferences();
         });
     }
+   
+    if (buttonGradientToggle) {
+        buttonGradientToggle.addEventListener('click', () => {
+        body.classList.toggle('no-button-gradient');
+        if (body.classList.contains('no-button-gradient')) {
+            buttonGradientToggle.textContent = '✨ 开启按钮渐变';
+            buttonGradientToggle.classList.add('active');
+        } else {
+            buttonGradientToggle.textContent = '🔘 关闭按钮渐变';
+            buttonGradientToggle.classList.remove('active');
+        }
+        syncPreferences();
+    });
+}
 }
 
 // ========== 5. 导航栏高亮 ==========
@@ -172,6 +202,7 @@ window.addEventListener('DOMContentLoaded', () => {
     applyButtonColors();
     loadGradientPreference();
     loadUnderlinePreference();
+    loadButtonGradientPreference();   // ← 加上
     bindToggleButtons();
     highlightNav();
     bindShareFunction();

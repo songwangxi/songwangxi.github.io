@@ -201,8 +201,7 @@
             </div>
         </div>
     </div>
-
-    <script>
+<script>
     // ========== 1. 自定义渐变色 ==========
     function applyCustomGradients() {
         document.querySelectorAll('.gradient').forEach(el => {
@@ -235,7 +234,17 @@
         }
     }
 
-    // ========== 2. 文字渐变开关 ==========
+    // ========== 2. 同步偏好设置到其他页面 ==========
+    function syncPreferences() {
+        const state = {
+            gradient: body.classList.contains('no-gradient') ? 'off' : 'on',
+            underline: body.classList.contains('no-underline') ? 'off' : 'on'
+        };
+        localStorage.setItem('gradientPreference', state.gradient);
+        localStorage.setItem('underlinePreference', state.underline);
+    }
+
+    // ========== 3. 文字渐变开关 ==========
     const gradientToggle = document.getElementById('gradientToggle');
     const body = document.body;
 
@@ -257,15 +266,14 @@
         if (body.classList.contains('no-gradient')) {
             gradientToggle.textContent = '✨ 开启文字渐变';
             gradientToggle.classList.add('active');
-            localStorage.setItem('gradientPreference', 'off');
         } else {
             gradientToggle.textContent = '🎨 关闭文字渐变';
             gradientToggle.classList.remove('active');
-            localStorage.setItem('gradientPreference', 'on');
         }
+        syncPreferences();
     });
 
-    // ========== 3. 下划线渐变开关 ==========
+    // ========== 4. 下划线渐变开关 ==========
     const underlineToggle = document.getElementById('underlineToggle');
 
     function loadUnderlinePreference() {
@@ -286,24 +294,19 @@
         if (body.classList.contains('no-underline')) {
             underlineToggle.textContent = '✨ 开启下划线渐变';
             underlineToggle.classList.add('active');
-            localStorage.setItem('underlinePreference', 'off');
         } else {
             underlineToggle.textContent = '📏 关闭下划线渐变';
             underlineToggle.classList.remove('active');
-            localStorage.setItem('underlinePreference', 'on');
         }
+        syncPreferences();
     });
 
-    // ========== 4. 导航栏高亮当前页面 ==========
-    (function highlightNav() {
-        const currentPath = window.location.pathname;
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
-            }
-        });
-    })();
+    // ========== 5. 导航栏高亮当前页面 ==========
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        if (link.getAttribute('href') === window.location.pathname) {
+            link.classList.add('active');
+        }
+    });
 
     // ========== 初始化 ==========
     window.addEventListener('DOMContentLoaded', () => {

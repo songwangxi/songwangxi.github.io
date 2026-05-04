@@ -42,48 +42,62 @@ function applyButtonColors() {
 // ========== 3. 加载偏好设置 ==========
 function loadGradientPreference() {
     const body = document.body;
-    const btn = document.getElementById('gradientToggle');
-    if (!btn) return;
     const saved = localStorage.getItem('gradientPreference');
     if (saved === 'off') {
         body.classList.add('no-gradient');
-        btn.textContent = '✨ 开启文字渐变';
-        btn.classList.add('active');
     } else {
         body.classList.remove('no-gradient');
-        btn.textContent = '🎨 关闭文字渐变';
-        btn.classList.remove('active');
+    }
+    // 按钮更新独立处理，不存在就跳过
+    const btn = document.getElementById('gradientToggle');
+    if (btn) {
+        if (saved === 'off') {
+            btn.textContent = '✨ 开启文字渐变';
+            btn.classList.add('active');
+        } else {
+            btn.textContent = '🎨 关闭文字渐变';
+            btn.classList.remove('active');
+        }
     }
 }
 
 function loadUnderlinePreference() {
     const body = document.body;
-    const btn = document.getElementById('underlineToggle');
-    if (!btn) return;
     const saved = localStorage.getItem('underlinePreference');
     if (saved === 'off') {
         body.classList.add('no-underline');
-        btn.textContent = '✨ 开启下划线渐变';
-        btn.classList.add('active');
     } else {
         body.classList.remove('no-underline');
-        btn.textContent = '📏 关闭下划线渐变';
-        btn.classList.remove('active');
+    }
+    const btn = document.getElementById('underlineToggle');
+    if (btn) {
+        if (saved === 'off') {
+            btn.textContent = '✨ 开启下划线渐变';
+            btn.classList.add('active');
+        } else {
+            btn.textContent = '📏 关闭下划线渐变';
+            btn.classList.remove('active');
+        }
     }
 }
+
 function loadButtonGradientPreference() {
     const body = document.body;
-    const btn = document.getElementById('buttonGradientToggle');
-    if (!btn) return;
     const saved = localStorage.getItem('buttonGradientPreference');
     if (saved === 'off') {
         body.classList.add('no-button-gradient');
-        btn.textContent = '✨ 开启按钮渐变';
-        btn.classList.add('active');
     } else {
         body.classList.remove('no-button-gradient');
-        btn.textContent = '🔘 关闭按钮渐变';
-        btn.classList.remove('active');
+    }
+    const btn = document.getElementById('buttonGradientToggle');
+    if (btn) {
+        if (saved === 'off') {
+            btn.textContent = '✨ 开启按钮渐变';
+            btn.classList.add('active');
+        } else {
+            btn.textContent = '🔘 关闭按钮渐变';
+            btn.classList.remove('active');
+        }
     }
 }
 function syncPreferences() {

@@ -202,7 +202,10 @@ function bindShareFunction() {
     const messageList = document.getElementById('messageList');
 
     if (!shareBtn) return;
-
+const sendBtn = document.getElementById('sendBtn');
+if (sendBtn) {
+    sendBtn.addEventListener('click', sendMessage);
+}
     // 生成分享链接（保留原有功能）
     shareBtn.addEventListener('click', () => {
         const text = messageInput.value.trim();

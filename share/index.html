@@ -65,6 +65,11 @@
             padding: 1.8rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .card:hover {
+             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-4px);
         }
 
         .input-area { display: flex; gap: 12px; margin: 1.5rem 0; }
@@ -88,9 +93,14 @@
             cursor: pointer;
             transition: background 0.2s ease;
         }
-        .input-area button:hover { background: #4338ca; }
+        .input-area button:hover {
+            background: #4338ca;
+        }
 
-        .message-list { list-style: none; padding: 0; }
+        .message-list {
+            list-style: none;
+            padding: 0;
+        }
         .message-list li {
             background: #f8fafc;
             margin-bottom: 0.8rem;
@@ -111,16 +121,16 @@
         }
         .hidden { display: none; }
         /* 关闭文字渐变 */
-body.no-gradient .gradient {
-    background: none !important;
-    -webkit-text-fill-color: #1e293b !important;
-    color: #1e293b !important;
-}
+        body.no-gradient .gradient {
+            background: none !important;
+            -webkit-text-fill-color: #1e293b !important;
+            color: #1e293b !important;
+        }
 
 /* 关闭下划线渐变 */
-body.no-underline .link-underline::after {
-    background: #4f46e5 !important;
-}
+         body.no-underline .link-underline::after {
+            background: #4f46e5 !important;
+        }
     </style>
 </head>
 <body>

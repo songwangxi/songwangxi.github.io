@@ -110,6 +110,17 @@
             margin: 1rem 0;
         }
         .hidden { display: none; }
+        /* 关闭文字渐变 */
+body.no-gradient .gradient {
+    background: none !important;
+    -webkit-text-fill-color: #1e293b !important;
+    color: #1e293b !important;
+}
+
+/* 关闭下划线渐变 */
+body.no-underline .link-underline::after {
+    background: #4f46e5 !important;
+}
     </style>
 </head>
 <body>
@@ -148,62 +159,100 @@
     </div>
 
     <script>
-        // 自定义渐变色
-        document.querySelectorAll('.gradient').forEach(el => {
-            const color1 = el.getAttribute('color1');
-            const color2 = el.getAttribute('color2');
-            if (color1 && color2) {
-                el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
-                el.style.webkitBackgroundClip = 'text';
-                el.style.backgroundClip = 'text';
-                el.style.webkitTextFillColor = 'transparent';
-                el.style.color = 'transparent';
-            }
-        });
+    const body = document.body;
 
-        const messageInput = document.getElementById('messageInput');
-        const shareBtn = document.getElementById('shareBtn');
-        const shareArea = document.getElementById('shareArea');
-        const shareLink = document.getElementById('shareLink');
-        const copyBtn = document.getElementById('copyBtn');
-        const messageList = document.getElementById('messageList');
+    // ========== 1. 自定义渐变色 ==========
+    document.querySelectorAll('.gradient').forEach(el => {
+        const color1 = el.getAttribute('color1');
+        const color2 = el.getAttribute('color2');
+        if (color1 && color2) {
+            el.style.background = `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`;
+            el.style.webkitBackgroundClip = 'text';
+            el.style.backgroundClip = 'text';
+            el.style.webkitTextFillColor = 'transparent';
+            el.style.color = 'transparent';
+        }
+    });
 
-        // 生成分享链接
-        shareBtn.addEventListener('click', () => {
-            const text = messageInput.value.trim();
-            if (!text) return alert('请先输入内容！');
-            const encodedText = btoa(unescape(encodeURIComponent(text)));
-            const currentUrl = window.location.href.split('?')[0];
-            const shareUrl = `${currentUrl}?msg=${encodedText}`;
-            shareLink.textContent = shareUrl;
-            shareArea.classList.remove('hidden');
-        });
-
-        // 复制链接
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(shareLink.textContent).then(() => alert('链接已复制！'));
-        });
-
-        // 加载分享的留言
-        function loadSharedMessage() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedMsg = urlParams.get('msg');
-            if (encodedMsg) {
-                try {
-                    const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
-                    messageList.innerHTML = `<li>${escapeHtml(decodedText)}</li>`;
-                } catch (e) {
-                    messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
-                }
-            }
+    // ========== 2. 加载偏好设置 ==========
+    function loadPreferences() {
+        // 文字渐变
+        const gradientPref = localStorage.getItem('gradientPreference');
+        if (gradientPref === 'off') {
+            body.classList.add('no-gradient');
+        } else {
+            body.classList.remove('no-gradient');
         }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        // 下划线渐变
+        const underlinePref = localStorage.getItem('underlinePreference');
+        if (underlinePref === 'off') {
+            body.classList.add('no-underline');
+        } else {
+            body.classList.remove('no-underline');
         }
+    }
 
-        loadSharedMessage();
-    </script>
+    // ========== 3. 监听其他页面的改动（实时同步） ==========
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'gradientPreference') {
+            if (e.newValue === 'off') {
+                body.classList.add('no-gradient');
+            } else {
+                body.classList.remove('no-gradient');
+            }
+        }
+        if (e.key === 'underlinePreference') {
+            if (e.newValue === 'off') {
+                body.classList.add('no-underline');
+            } else {
+                body.classList.remove('no-underline');
+            }
+        }
+    });
+
+    // ========== 分享留言功能 ==========
+    const messageInput = document.getElementById('messageInput');
+    const shareBtn = document.getElementById('shareBtn');
+    const shareArea = document.getElementById('shareArea');
+    const shareLink = document.getElementById('shareLink');
+    const copyBtn = document.getElementById('copyBtn');
+    const messageList = document.getElementById('messageList');
+
+    shareBtn.addEventListener('click', () => {
+        const text = messageInput.value.trim();
+        if (!text) return alert('请先输入内容！');
+        const encodedText = btoa(unescape(encodeURIComponent(text)));
+        const currentUrl = window.location.href.split('?')[0];
+        const shareUrl = `${currentUrl}?msg=${encodedText}`;
+        shareLink.textContent = shareUrl;
+        shareArea.classList.remove('hidden');
+    });
+
+    copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(shareLink.textContent).then(() => alert('链接已复制！'));
+    });
+
+    function loadSharedMessage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedMsg = urlParams.get('msg');
+        if (encodedMsg) {
+            try {
+                const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
+                messageList.innerHTML = `<li>${escapeHtml(decodedText)}</li>`;
+            } catch (e) {
+                messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
+            }
+        }
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    loadSharedMessage();
+    loadPreferences();
+</script>
 
 </body>
 </html>

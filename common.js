@@ -1,3 +1,4 @@
+const WORKER_URL = 'https://songwangxigithubio.songwei315.workers.dev/';
 // ========== 1. 自定义渐变色（文字 + 链接下划线） ==========
 function applyCustomGradients() {
     document.querySelectorAll('.gradient').forEach(el => {
@@ -200,8 +201,9 @@ function bindShareFunction() {
     const copyBtn = document.getElementById('copyBtn');
     const messageList = document.getElementById('messageList');
 
-    if (!shareBtn) return; // 不在分享页面就跳过
+    if (!shareBtn) return;
 
+    // 生成分享链接（保留原有功能）
     shareBtn.addEventListener('click', () => {
         const text = messageInput.value.trim();
         if (!text) return alert('请先输入内容！');
@@ -218,19 +220,52 @@ function bindShareFunction() {
         });
     }
 
-    function loadSharedMessage() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedMsg = urlParams.get('msg');
-        if (encodedMsg) {
-            try {
-                const decodedText = decodeURIComponent(escape(atob(encodedMsg)));
-                messageList.innerHTML = `<li>${decodedText.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</li>`;
-            } catch (e) {
-                messageList.innerHTML = '<li>链接中的留言无法解析。</li>';
+    // 加载留言（从 Cloudflare Worker 获取）
+    async function loadMessages() {
+        try {
+            const res = await fetch(WORKER_URL);
+            const messages = await res.json();
+            if (messages.length === 0) {
+                messageList.innerHTML = '<li>还没有留言，来写第一条吧！</li>';
+                return;
             }
+            messageList.innerHTML = messages.map(msg => 
+                `<li>${escapeHtml(msg.text)}</li>`
+            ).join('');
+        } catch (e) {
+            messageList.innerHTML = '<li>加载失败，请稍后再试。</li>';
         }
     }
-    loadSharedMessage(); 
+
+    // 发送留言到 Cloudflare Worker
+    async function sendMessage() {
+        const text = messageInput.value.trim();
+        if (!text) return;
+        try {
+            await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text })
+            });
+            messageInput.value = '';
+            loadMessages();
+        } catch (e) {
+            alert('发送失败，请稍后再试。');
+        }
+    }
+
+    // 给输入框绑定回车键发送
+    messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // 每3秒自动刷新
+    setInterval(loadMessages, 3000);
+    loadMessages();
+}
+
+function escapeHtml(text) {
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 // ========== 初始化 ==========

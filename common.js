@@ -234,6 +234,26 @@ function bindShareFunction() {
     }
 
     loadSharedMessage();
+}// ========== 滚动动画 ==========
+function initScrollAnimation() {
+    const animatedElements = document.querySelectorAll('.card-animate');
+
+    if (animatedElements.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // 动画只播放一次，之后不再触发
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2, // 卡片露出 20% 时触发
+        rootMargin: '0px 0px -30px 0px' // 底部偏移，让动画提前一点触发
+    });
+
+    animatedElements.forEach(el => observer.observe(el));
 }
 
 // ========== 初始化 ==========
@@ -246,4 +266,5 @@ window.addEventListener('DOMContentLoaded', () => {
     bindToggleButtons();
     highlightNav();
     bindShareFunction();
+    initScrollAnimation(); // ← 加上这行
 });

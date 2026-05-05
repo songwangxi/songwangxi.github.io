@@ -246,7 +246,7 @@ function initScrollAnimation() {
                 entry.target.classList.add('visible');
             }
         });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.5 });
 
     cards.forEach(card => observer.observe(card));
 }

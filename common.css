@@ -197,3 +197,31 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 .card-animate.scale-in {
     transform: scale(0.92);
 }
+/* 滑入 + 缩放合并动画 */
+
+/* 从左滑入 + 缩放 */
+.card-animate.from-left-scale {
+    transform: translateX(-40px) scale(0.92);
+}
+.card-animate.from-left-scale.visible {
+    opacity: 1;
+    transform: translateX(0) scale(1) !important;
+}
+
+/* 从右滑入 + 缩放 */
+.card-animate.from-right-scale {
+    transform: translateX(40px) scale(0.92);
+}
+.card-animate.from-right-scale.visible {
+    opacity: 1;
+    transform: translateX(0) scale(1) !important;
+}
+
+/* 从下往上滑入 + 缩放 */
+.card-animate.from-bottom-scale {
+    transform: translateY(30px) scale(0.92);
+}
+.card-animate.from-bottom-scale.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1) !important;
+}

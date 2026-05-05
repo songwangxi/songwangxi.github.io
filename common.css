@@ -169,31 +169,31 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 /* ========== 卡片滚动动画 ========== */
 .card-animate {
     opacity: 0;
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 可见状态 */
+/* 可见状态 - 归位 */
 .card-animate.visible {
     opacity: 1;
-    transform: translate(0, 0) scale(1) !important;
+    transform: translateX(0) translateY(0) scale(1) !important;
 }
 
-/* 从左边滑入 */
+/* 从偏左位置滑入 */
 .card-animate.from-left {
-    transform: translateX(-80px);
+    transform: translateX(-40px);
 }
 
-/* 从右边滑入 */
+/* 从偏右位置滑入 */
 .card-animate.from-right {
-    transform: translateX(80px);
+    transform: translateX(40px);
 }
 
-/* 从下方滑入 */
+/* 从偏下位置滑入 */
 .card-animate.from-bottom {
-    transform: translateY(60px);
+    transform: translateY(30px);
 }
 
 /* 淡入 + 缩放 */
 .card-animate.scale-in {
-    transform: scale(0.85);
+    transform: scale(0.92);
 }

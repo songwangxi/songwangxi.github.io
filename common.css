@@ -81,24 +81,31 @@ body.no-gradient .gradient {
 .toggle-btn:hover { opacity: 0.9; }
 .toggle-btn.active { opacity: 0.6; }
 
-/* ========== 卡片样式 ========== */
-.card-grid { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 1rem; }
-.card-grid.left { justify-content: flex-start; }
-.card-grid.stretch .card { flex: 1 1 0; min-width: 250px; }
+/* ========== 卡片滚动动画 ========== */
+.card-animate {
+    opacity: 0;
+    --tx: 0px;
+    --ty: 0px;
+    --sc: 1;
+    transform: translateX(var(--tx)) translateY(var(--ty)) scale(var(--sc));
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
-.card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 1.8rem;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
-    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    flex: 0 1 calc(33.333% - 1rem);
+/* 可见状态 */
+.card-animate.visible {
+    opacity: 1;
+    --tx: 0px !important;
+    --ty: 0px !important;
+    --sc: 1 !important;
 }
-.card:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-    transform: translateY(-4px);
-}
-.card.wide { flex-basis: 100%; }
+
+/* 方向类只设置偏移量 */
+.card-animate.from-left    { --tx: -40px; }
+.card-animate.from-right   { --tx: 40px; }
+.card-animate.from-bottom  { --ty: 30px; }
+
+/* 缩放类只设置缩放 */
+.card-animate.scale-in     { --sc: 0.92; }
 
 /* ========== 链接下划线 ========== */
 .link-underline {

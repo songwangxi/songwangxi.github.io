@@ -81,31 +81,6 @@ body.no-gradient .gradient {
 .toggle-btn:hover { opacity: 0.9; }
 .toggle-btn.active { opacity: 0.6; }
 
-/* ========== 卡片滚动动画 ========== */
-.card-animate {
-    opacity: 0;
-    --tx: 0px;
-    --ty: 0px;
-    --sc: 1;
-    transform: translateX(var(--tx)) translateY(var(--ty)) scale(var(--sc));
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* 可见状态 */
-.card-animate.visible {
-    opacity: 1;
-    --tx: 0px !important;
-    --ty: 0px !important;
-    --sc: 1 !important;
-}
-
-/* 方向类只设置偏移量 */
-.card-animate.from-left    { --tx: -40px; }
-.card-animate.from-right   { --tx: 40px; }
-.card-animate.from-bottom  { --ty: 30px; }
-
-/* 缩放类只设置缩放 */
-.card-animate.scale-in     { --sc: 0.92; }
 
 /* ========== 链接下划线 ========== */
 .link-underline {
@@ -173,62 +148,56 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
     margin: 1rem 0;
 }
 .hidden { display: none; }
+/* ========== 卡片网格容器 ========== */
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.card-grid.left { justify-content: flex-start; }
+.card-grid.right { justify-content: flex-end; }
+.card-grid.stretch .card { flex: 1 1 0; min-width: 250px; }
+
+/* ========== 卡片基础样式 ========== */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.8rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    flex: 0 1 calc(33.333% - 1rem);
+}
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+}
+.card.wide { flex-basis: 100%; }
+.card.narrow { flex-basis: 200px; }
+
 /* ========== 卡片滚动动画 ========== */
 .card-animate {
     opacity: 0;
+    --tx: 0px;
+    --ty: 0px;
+    --sc: 1;
+    transform: translateX(var(--tx)) translateY(var(--ty)) scale(var(--sc));
     transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* 可见状态 - 归位 */
 .card-animate.visible {
     opacity: 1;
-    transform: translateX(0) translateY(0) scale(1) !important;
+    --tx: 0px !important;
+    --ty: 0px !important;
+    --sc: 1 !important;
 }
 
-/* 从偏左位置滑入 */
-.card-animate.from-left {
-    transform: translateX(-40px);
-}
+/* 方向类 - 只设置偏移量 */
+.card-animate.from-left   { --tx: -40px; }
+.card-animate.from-right  { --tx: 40px; }
+.card-animate.from-bottom { --ty: 30px; }
 
-/* 从偏右位置滑入 */
-.card-animate.from-right {
-    transform: translateX(40px);
-}
-
-/* 从偏下位置滑入 */
-.card-animate.from-bottom {
-    transform: translateY(30px);
-}
-
-/* 淡入 + 缩放 */
-.card-animate.scale-in {
-    transform: scale(0.92);
-}
-/* 滑入 + 缩放合并动画 */
-
-/* 从左滑入 + 缩放 */
-.card-animate.from-left-scale {
-    transform: translateX(-40px) scale(0.92);
-}
-.card-animate.from-left-scale.visible {
-    opacity: 1;
-    transform: translateX(0) scale(1) !important;
-}
-
-/* 从右滑入 + 缩放 */
-.card-animate.from-right-scale {
-    transform: translateX(40px) scale(0.92);
-}
-.card-animate.from-right-scale.visible {
-    opacity: 1;
-    transform: translateX(0) scale(1) !important;
-}
-
-/* 从下往上滑入 + 缩放 */
-.card-animate.from-bottom-scale {
-    transform: translateY(30px) scale(0.92);
-}
-.card-animate.from-bottom-scale.visible {
-    opacity: 1;
-    transform: translateY(0) scale(1) !important;
-}
+/* 缩放类 - 只设置缩放 */
+.card-animate.scale-in { --sc: 0.92; }

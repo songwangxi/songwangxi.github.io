@@ -175,7 +175,15 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 }
 .card.wide { flex-basis: 100%; }
 .card.narrow { flex-basis: 200px; }
-
+/* ========== 透明卡片 ========== */
+.card-ghost {
+    background: transparent;
+    box-shadow: none;
+}
+.card-ghost:hover {
+    box-shadow: none;
+    transform: translateY(-4px);
+}
 /* ========== 卡片滚动动画 ========== */
 .card-animate {
     opacity: 0;

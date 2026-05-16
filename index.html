@@ -61,17 +61,17 @@
     <p>这张卡片从左侧滑入视野。</p>
 </div>
 
-<div class="card card-animate from-right" style="margin-top: 400px;">
+<div class="card card-animate from-right" style="margin-top: 40px;">
     <h3>从右边滑入</h3>
     <p>这张卡片从右侧滑入视野。</p>
 </div>
 
-<div class="card card-animate from-bottom" style="margin-top: 400px;">
+<div class="card card-animate from-bottom" style="margin-top: 40px;">
     <h3>从下方滑入</h3>
     <p>这张卡片从下方滑入视野。</p>
 </div>
 
-<div class="card card-animate scale-in" style="margin-top: 400px;">
+<div class="card card-animate scale-in" style="margin-top: 40px;">
     <h3>缩放淡入</h3>
     <p>这张卡片从缩放状态放大到正常。</p>
 </div><!-- 透明卡片 + 从左滑入 -->
@@ -79,7 +79,30 @@
     <h3>看起来只有文字在动</h3>
     <p>卡片背景完全透明，只有内容在滑入。</p>
 </div>
+<!-- 默认滑入距离和缩放 -->
+<div class="card card-animate from-left scale-in">
+    默认：左滑 40px + 缩放 0.92
+</div>
 
+<!-- 自定义滑入更远，缩放更小 -->
+<div class="card card-animate from-left scale-in" style="--tx: -100px; --sc: 0.8;">
+    左滑 100px + 缩放 0.8
+</div>
+
+<!-- 从右边轻微滑入，几乎不缩放 -->
+<div class="card card-animate from-right scale-in" style="--tx: 20px; --sc: 0.97;">
+    右滑 20px + 缩放 0.97
+</div>
+
+<!-- 只控制滑动距离 -->
+<div class="card card-animate from-left" style="--tx: -200px;">
+    左滑 200px（可能溢出屏幕）
+</div>
+
+<!-- 只控制缩放程度 -->
+<div class="card card-animate scale-in" style="--sc: 0.5;">
+    缩放 0.5
+</div>
 <!-- 透明卡片 + 从右滑入 + 缩放 -->
 <div class="card card-ghost card-animate from-right scale-in">
     <h3>文字从右边飞来</h3>

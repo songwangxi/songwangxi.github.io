@@ -187,7 +187,6 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 /* ========== 卡片滚动动画 ========== */
 .card-animate {
     opacity: 0;
-    /* 用变量分别控制位移和缩放 */
     --tx: 0px;
     --ty: 0px;
     --sc: 1;
@@ -198,15 +197,13 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 /* 可见状态 - 全部归位 */
 .card-animate.visible {
     opacity: 1;
-    --tx: 0px !important;
-    --ty: 0px !important;
-    --sc: 1 !important;
+    transform: translateX(0) translateY(0) scale(1) !important;
 }
 
-/* 方向类 - 只改自己的变量，互不冲突 */
+/* 方向类 - 只设置变量，不设 transform */
 .from-left   { --tx: -40px; }
 .from-right  { --tx: 40px; }
 .from-bottom { --ty: 30px; }
 
-/* 缩放类 - 只改自己的变量 */
+/* 缩放类 - 只设置变量 */
 .scale-in { --sc: 0.92; }

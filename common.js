@@ -250,6 +250,31 @@ function initScrollAnimation() {
 
     cards.forEach(card => observer.observe(card));
 }
+// ========== 卡片倾斜效果 ==========
+function initTiltCards() {
+    const cards = document.querySelectorAll('.card-tilt');
+    if (cards.length === 0) return;
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;   // 鼠标在卡片内的水平位置
+            const y = e.clientY - rect.top;    // 鼠标在卡片内的垂直位置
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            // 计算倾斜角度（最大 8 度）
+            const rotateY = ((x - centerX) / centerX) * 12;
+            const rotateX = ((centerY - y) / centerY) * 12;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+    });
+}
 // ========== 初始化 ==========
 window.addEventListener('DOMContentLoaded', () => {
     applyCustomGradients();
@@ -260,5 +285,6 @@ window.addEventListener('DOMContentLoaded', () => {
     bindToggleButtons();
     highlightNav();
     bindShareFunction();
-    initScrollAnimation(); // ← 加上这行
+    initScrollAnimation();
+    initTiltCards();
 });

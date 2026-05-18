@@ -166,7 +166,7 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
     border-radius: 12px;
     padding: 1.8rem;
     box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
-    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
     flex: 0 1 calc(33.333% - 1rem);
 }
 .card:hover {

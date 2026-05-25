@@ -6,6 +6,12 @@ body {
     line-height: 1.7;
     color: #334155;
     background-color: #f0f9ff;
+    /* 下面两行是新增的 */
+    background-image: url('/image-1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

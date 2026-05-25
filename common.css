@@ -168,7 +168,9 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 
 /* ========== 卡片基础样式 ========== */
 .card {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 1.8rem;
     box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
@@ -183,7 +185,9 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 .card.narrow { flex-basis: 200px; }
 /* ========== 透明卡片 ========== */
 .card-ghost {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     box-shadow: none;
 }
 .card-ghost:hover {

@@ -75,7 +75,7 @@ body.no-gradient .gradient {
 .toggle-btn {
     display: inline-block;
     padding: 0.6rem 1.8rem;
-    background: #4f46e5;   /* 保留作为默认色，没写 color1/color2 时用这个 */
+    background: #4f46e5;
     color: #fff;
     border: none;
     border-radius: 50px;
@@ -83,8 +83,9 @@ body.no-gradient .gradient {
     cursor: pointer;
     margin-bottom: 1rem;
     transition: opacity 0.2s ease;
+    text-decoration: none; /* ← 加这行 */
 }
-.toggle-btn:hover { opacity: 0.9; }
+.toggle-btn:hover { opacity: 0.9; text-decoration: none; } /* hover 也加上 */
 .toggle-btn.active { opacity: 0.6; }
 
 

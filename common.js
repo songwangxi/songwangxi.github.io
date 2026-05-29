@@ -265,7 +265,11 @@ function initScrollAnimation() {
             const currentTy = ty * (1 - progress);
             const currentSc = sc + (1 - sc) * progress;
 
-            el.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentSc})`;
+            // 一旦动画完成过，就保持可见
+if (progress === 1) {
+    el.dataset.animationDone = 'true';
+}
+el.style.opacity = el.dataset.animationDone === 'true' ? 1 : progress;
         });
     }
 
@@ -273,9 +277,6 @@ function initScrollAnimation() {
     updateAnimations();
 }
 
-    window.addEventListener('scroll', updateAnimations);
-    updateAnimations(); // 初始调用
-}
 // ========== 卡片倾斜效果 ==========
 function initTiltCards() {
     const cards = document.querySelectorAll('.card-tilt');
@@ -284,20 +285,21 @@ function initTiltCards() {
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;   // 鼠标在卡片内的水平位置
-            const y = e.clientY - rect.top;    // 鼠标在卡片内的垂直位置
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            // 计算倾斜角度（最大 8 度）
-            const rotateY = ((x - centerX) / centerX) * 12;
-            const rotateX = ((centerY - y) / centerY) * 12;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            const rotateX = ((centerY - y) / centerY) * 8;
 
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // 叠加倾斜到现有 transform 后面
+            card.style.transform += ` rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+            // 移除倾斜，恢复原始 transform
+            card.style.transform = card.style.transform.replace(/ rotateX\(.*?\) rotateY\(.*?\)/, '');
         });
     });
 }

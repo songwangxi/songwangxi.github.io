@@ -244,7 +244,6 @@ function initScrollAnimation() {
         const windowHeight = window.innerHeight;
 
         targets.forEach(el => {
-            // 从元素属性读取动画区间，没有则用默认值
             const start = parseFloat(el.getAttribute('data-start')) || 1.0;
             const end = parseFloat(el.getAttribute('data-end')) || 0.3;
 
@@ -255,8 +254,6 @@ function initScrollAnimation() {
             let progress = (start - percent) / (start - end);
             progress = Math.max(0, Math.min(1, progress));
 
-            el.style.opacity = progress;
-
             const tx = parseFloat(el.style.getPropertyValue('--tx')) || 0;
             const ty = parseFloat(el.style.getPropertyValue('--ty')) || 0;
             const sc = parseFloat(el.style.getPropertyValue('--sc')) || 1;
@@ -265,11 +262,14 @@ function initScrollAnimation() {
             const currentTy = ty * (1 - progress);
             const currentSc = sc + (1 - sc) * progress;
 
-            // 一旦动画完成过，就保持可见
-if (progress === 1) {
-    el.dataset.animationDone = 'true';
-}
-el.style.opacity = el.dataset.animationDone === 'true' ? 1 : progress;
+            // 修复1：补上 px 单位，并正确设置动画
+            el.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentSc})`;
+
+            // 修复2：动画完成后保持可见，不会滚出屏幕就消失
+            if (progress === 1) {
+                el.dataset.animationDone = 'true';
+            }
+            el.style.opacity = el.dataset.animationDone === 'true' ? 1 : progress;
         });
     }
 
@@ -293,13 +293,16 @@ function initTiltCards() {
             const rotateY = ((x - centerX) / centerX) * 8;
             const rotateX = ((centerY - y) / centerY) * 8;
 
-            // 叠加倾斜到现有 transform 后面
-            card.style.transform += ` rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // 修复：读取当前 transform 中的位移和缩放，再叠加倾斜
+            const currentTransform = card.style.transform || '';
+            // 移除之前可能加上的倾斜角度，避免重复叠加
+            const baseTransform = currentTransform.replace(/ rotateX\(.*?deg\) rotateY\(.*?deg\)/, '');
+            card.style.transform = `${baseTransform} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            // 移除倾斜，恢复原始 transform
-            card.style.transform = card.style.transform.replace(/ rotateX\(.*?\) rotateY\(.*?\)/, '');
+            // 鼠标移开，去掉倾斜角度，保留原来的位移和缩放
+            card.style.transform = card.style.transform.replace(/ rotateX\(.*?deg\) rotateY\(.*?deg\)/, '');
         });
     });
 }

@@ -196,19 +196,13 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
     transform: translateY(-4px);
 }
 /* ========== 卡片滚动动画 ========== */
-.card-animate {
+.card-animate, .text-animate {
     opacity: 0;
     --tx: 0px;
     --ty: 0px;
     --sc: 1;
     transform: translateX(var(--tx)) translateY(var(--ty)) scale(var(--sc));
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* 可见状态 - 归位 */
-.card-animate.visible {
-    opacity: 1;
-    transform: translateX(0) translateY(0) scale(1);
+    /* 注意：这里不要加 transition，动画由 JS 驱动 */
 }
 
 /* 方向类 - 只设置变量 */
@@ -216,8 +210,9 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 .from-right  { --tx: 40px; }
 .from-bottom { --ty: 30px; }
 
-/* 缩放类 - 只设置变量 */
-.scale-in { --sc: 0.92; } 
+/* 缩放类 */
+.scale-in { --sc: 0.92; }
+
 
 /* 带动画的卡片 hover 上浮 */
 .card.card-animate.visible:hover {

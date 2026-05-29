@@ -237,18 +237,41 @@ function bindShareFunction() {
 }
 // 滚动动画
 function initScrollAnimation() {
-    const cards = document.querySelectorAll('.card-animate');
-    if (cards.length === 0) return;
+    const targets = document.querySelectorAll('.card-animate, .text-animate');
+    if (targets.length === 0) return;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+    function updateAnimations() {
+        targets.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // 动画开始位置：元素底部刚进入视口
+            const start = windowHeight;
+            // 动画结束位置：元素顶部到达视口 20% 处
+            const end = windowHeight * 0.2;
+            
+            // 计算动画进度 (0 到 1)
+            let progress = (start - rect.bottom) / (start - end);
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // 根据进度设置透明度和位移
+            el.style.opacity = progress;
+            
+            const tx = parseFloat(getComputedStyle(el).getPropertyValue('--tx')) || 0;
+            const ty = parseFloat(getComputedStyle(el).getPropertyValue('--ty')) || 0;
+            const sc = parseFloat(getComputedStyle(el).getPropertyValue('--sc')) || 1;
+            
+            // 从初始位置过渡到最终位置
+            const currentTx = tx * (1 - progress);
+            const currentTy = ty * (1 - progress);
+            const currentSc = sc + (1 - sc) * progress;
+            
+            el.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentSc})`;
         });
-    }, { threshold: 0.5 });
+    }
 
-    cards.forEach(card => observer.observe(card));
+    window.addEventListener('scroll', updateAnimations);
+    updateAnimations(); // 初始调用
 }
 // ========== 卡片倾斜效果 ==========
 function initTiltCards() {

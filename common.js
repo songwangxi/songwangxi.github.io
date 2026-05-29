@@ -277,12 +277,15 @@ function initScrollAnimation() {
     updateAnimations();
 }
 
-// ========== 卡片倾斜效果 ==========
+// ========== 卡片倾斜效果（修复版） ==========
 function initTiltCards() {
     const cards = document.querySelectorAll('.card-tilt');
     if (cards.length === 0) return;
 
     cards.forEach(card => {
+        // 添加平滑过渡，鼠标离开后能自然归位
+        card.style.transition = 'transform 0.2s ease-out';
+
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -290,19 +293,16 @@ function initTiltCards() {
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
 
-            const rotateY = ((x - centerX) / centerX) * 8;
-            const rotateX = ((centerY - y) / centerY) * 8;
+            const rotateY = ((x - centerX) / centerX) * 6;   // 改成6度，更自然
+            const rotateX = ((centerY - y) / centerY) * 6;
 
-            // 修复：读取当前 transform 中的位移和缩放，再叠加倾斜
-            const currentTransform = card.style.transform || '';
-            // 移除之前可能加上的倾斜角度，避免重复叠加
-            const baseTransform = currentTransform.replace(/ rotateX\(.*?deg\) rotateY\(.*?deg\)/, '');
-            card.style.transform = `${baseTransform} rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            // 直接设置完整的 transform，不依赖原有值
+            card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
         });
 
         card.addEventListener('mouseleave', () => {
-            // 鼠标移开，去掉倾斜角度，保留原来的位移和缩放
-            card.style.transform = card.style.transform.replace(/ rotateX\(.*?deg\) rotateY\(.*?deg\)/, '');
+            // 归位到完全平整
+            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
         });
     });
 }

@@ -241,34 +241,37 @@ function initScrollAnimation() {
     if (targets.length === 0) return;
 
     function updateAnimations() {
+        const windowHeight = window.innerHeight;
+
         targets.forEach(el => {
+            // 从元素属性读取动画区间，没有则用默认值
+            const start = parseFloat(el.getAttribute('data-start')) || 1.0;
+            const end = parseFloat(el.getAttribute('data-end')) || 0.3;
+
             const rect = el.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            
-            // 动画开始位置：元素底部刚进入视口
-            const start = windowHeight;
-            // 动画结束位置：元素顶部到达视口 20% 处
-            const end = windowHeight * 0.2;
-            
-            // 计算动画进度 (0 到 1)
-            let progress = (start - rect.bottom) / (start - end);
+            const elTop = rect.top;
+            const percent = elTop / windowHeight;
+
+            let progress = (start - percent) / (start - end);
             progress = Math.max(0, Math.min(1, progress));
-            
-            // 根据进度设置透明度和位移
+
             el.style.opacity = progress;
-            
-            const tx = parseFloat(getComputedStyle(el).getPropertyValue('--tx')) || 0;
-            const ty = parseFloat(getComputedStyle(el).getPropertyValue('--ty')) || 0;
-            const sc = parseFloat(getComputedStyle(el).getPropertyValue('--sc')) || 1;
-            
-            // 从初始位置过渡到最终位置
+
+            const tx = parseFloat(el.style.getPropertyValue('--tx')) || 0;
+            const ty = parseFloat(el.style.getPropertyValue('--ty')) || 0;
+            const sc = parseFloat(el.style.getPropertyValue('--sc')) || 1;
+
             const currentTx = tx * (1 - progress);
             const currentTy = ty * (1 - progress);
             const currentSc = sc + (1 - sc) * progress;
-            
+
             el.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentSc})`;
         });
     }
+
+    window.addEventListener('scroll', updateAnimations);
+    updateAnimations();
+}
 
     window.addEventListener('scroll', updateAnimations);
     updateAnimations(); // 初始调用

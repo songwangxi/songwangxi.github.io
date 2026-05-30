@@ -195,23 +195,16 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
     box-shadow: none;
     transform: translateY(-4px);
 }
-/* ========== 卡片滚动动画 ========== */
 .card-animate, .text-animate {
     opacity: 0;
     --tx: 0px;
     --ty: 0px;
     --sc: 1;
     transform: translateX(var(--tx)) translateY(var(--ty)) scale(var(--sc));
-    /* 注意：这里不要加 transition，动画由 JS 驱动 */
 }
 
-/* 方向类 - 只设置变量 */
-.from-left   { --tx: -40px; }
-.from-right  { --tx: 40px; }
-.from-bottom { --ty: 30px; }
-
-/* 缩放类 */
-.scale-in { --sc: 0.92; }
+/* 方向类不再设置变量，只作为标记类 */
+/* .from-left、.from-right、.from-bottom、.scale-in 保持空类即可 */
 
 
 /* 带动画的卡片 hover 上浮 */

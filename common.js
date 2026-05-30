@@ -263,6 +263,7 @@ function initScrollAnimation() {
             el.style.transform = `translateX(${tx * (1 - p)}px) translateY(${ty * (1 - p)}px) scale(${sc + (1 - sc) * p})`;
             if (p === 1) el.dataset.animationDone = 'true';
             el.style.opacity = el.dataset.animationDone === 'true' ? 1 : p;
+            el.style.setProperty('opacity', el.dataset.animationDone === 'true' ? 1 : p, 'important');
         });
     }
     window.addEventListener('scroll', update);

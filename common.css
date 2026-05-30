@@ -208,8 +208,8 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 
 
 /* 带动画的卡片 hover 上浮 */
-.card.card-animate.visible:hover {
-    transform: translateY(-4px);
+.card.card-animate:hover {
+    transform: translateY(-4px) !important;
     box-shadow: 0 8px 25px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
 }
 /* 卡片水平位置工具类 */

@@ -234,7 +234,16 @@ function bindShareFunction() {
     }
 
     loadSharedMessage();
-}function initScrollAnimation() {
+}
+function applyAnimationDefaults() {
+    document.querySelectorAll('.card-animate, .text-animate').forEach(el => {
+        if (el.classList.contains('from-left') && !el.hasAttribute('data-tx')) el.setAttribute('data-tx', '-40');
+        if (el.classList.contains('from-right') && !el.hasAttribute('data-tx')) el.setAttribute('data-tx', '40');
+        if (el.classList.contains('from-bottom') && !el.hasAttribute('data-ty')) el.setAttribute('data-ty', '30');
+        if (el.classList.contains('scale-in') && !el.hasAttribute('data-sc')) el.setAttribute('data-sc', '0.92');
+    });
+}
+function initScrollAnimation() {
     const targets = document.querySelectorAll('.card-animate, .text-animate');
     if (targets.length === 0) return;
 
@@ -298,6 +307,7 @@ window.addEventListener('DOMContentLoaded', () => {
     bindToggleButtons();
     highlightNav();
     bindShareFunction();
-    initScrollAnimation();
+    applyAnimationDefaults();  // 先设置默认值
+    initScrollAnimation();     // 再启动动画
     initTiltCards();
 });

@@ -234,49 +234,31 @@ function bindShareFunction() {
     }
 
     loadSharedMessage();
-}
-// 滚动动画
-function initScrollAnimation() {
+}function initScrollAnimation() {
     const targets = document.querySelectorAll('.card-animate, .text-animate');
     if (targets.length === 0) return;
 
-    function updateAnimations() {
-        const windowHeight = window.innerHeight;
-
+    function update() {
+        const h = window.innerHeight;
         targets.forEach(el => {
             const start = parseFloat(el.getAttribute('data-start')) || 1.0;
             const end = parseFloat(el.getAttribute('data-end')) || 0.3;
+            const top = el.getBoundingClientRect().top;
+            const p = Math.max(0, Math.min(1, (start - top / h) / (start - end)));
 
-            const rect = el.getBoundingClientRect();
-            const elTop = rect.top;
-            const percent = elTop / windowHeight;
+            // 从 data 属性读取，而不是 CSS 变量
+            const tx = parseFloat(el.getAttribute('data-tx')) || 0;
+            const ty = parseFloat(el.getAttribute('data-ty')) || 0;
+            const sc = parseFloat(el.getAttribute('data-sc')) || 1;
 
-            let progress = (start - percent) / (start - end);
-            progress = Math.max(0, Math.min(1, progress));
-
-            const tx = parseFloat(el.style.getPropertyValue('--tx')) || 0;
-            const ty = parseFloat(el.style.getPropertyValue('--ty')) || 0;
-            const sc = parseFloat(el.style.getPropertyValue('--sc')) || 1;
-
-            const currentTx = tx * (1 - progress);
-            const currentTy = ty * (1 - progress);
-            const currentSc = sc + (1 - sc) * progress;
-
-            // 修复1：补上 px 单位，并正确设置动画
-            el.style.transform = `translateX(${currentTx}px) translateY(${currentTy}px) scale(${currentSc})`;
-
-            // 修复2：动画完成后保持可见，不会滚出屏幕就消失
-            if (progress === 1) {
-                el.dataset.animationDone = 'true';
-            }
-            el.style.opacity = el.dataset.animationDone === 'true' ? 1 : progress;
+            el.style.transform = `translateX(${tx * (1 - p)}px) translateY(${ty * (1 - p)}px) scale(${sc + (1 - sc) * p})`;
+            if (p === 1) el.dataset.animationDone = 'true';
+            el.style.opacity = el.dataset.animationDone === 'true' ? 1 : p;
         });
     }
-
-    window.addEventListener('scroll', updateAnimations);
-    updateAnimations();
+    window.addEventListener('scroll', update);
+    update();
 }
-
 // ========== 卡片倾斜效果（修复版） ==========
 function initTiltCards() {
     const cards = document.querySelectorAll('.card-tilt');

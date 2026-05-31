@@ -49,12 +49,14 @@
                 <a href="#" class="link-underline">这是一个默认链接 →</a>
             </div>
         </div>
-        <div class="card card-animate from-left">
-    <h3>从左边滑入</h3>
-    <p>这张卡片从左侧滑入视野。</p>
-</div><!-- 默认动画区间 (1.0 到 0.3) -->
-<div class="card card-animate" data-tx="-40" data-ty="0" data-sc="0.92">默认动画</div>
-<div class="card card-tilt">
+        <!-- 从左滑入，距离 100px -->
+<div class="card card-animate" data-tx="-100">大幅度左滑</div>
+
+<!-- 从右滑入，距离 60px + 缩放 -->
+<div class="card card-animate" data-tx="60" data-sc="0.85">右滑 + 缩放</div>
+
+<!-- 从下方滑入，距离 50px + 缩放 + 快速区间 -->
+<div class="card card-animate" data-tx="-200" data-sc="0.9" data-start="0.8" data-end="0.7">组合使用</div>
     <h3>鼠标放上来试试</h3>
     <p>卡片会朝鼠标方向倾斜。</p>
 </div>

@@ -250,22 +250,23 @@ function initScrollAnimation() {
     function update() {
         const h = window.innerHeight;
         targets.forEach(el => {
+            // 移除 data-animationDone 的判断，让每次滚动都重新计算
             const start = parseFloat(el.getAttribute('data-start')) || 1.0;
             const end = parseFloat(el.getAttribute('data-end')) || 0.3;
             const top = el.getBoundingClientRect().top;
-            const p = Math.max(0, Math.min(1, (start - top / h) / (start - end)));
-
-            // 从 data 属性读取，而不是 CSS 变量
+            let p = Math.max(0, Math.min(1, (start - top / h) / (start - end)));
+            
+            // 从 data 属性读取偏移值
             const tx = parseFloat(el.getAttribute('data-tx')) || 0;
             const ty = parseFloat(el.getAttribute('data-ty')) || 0;
             const sc = parseFloat(el.getAttribute('data-sc')) || 1;
 
+            // 始终根据 p 值计算 transform 和 opacity
             el.style.transform = `translateX(${tx * (1 - p)}px) translateY(${ty * (1 - p)}px) scale(${sc + (1 - sc) * p})`;
-            if (p === 1) el.dataset.animationDone = 'true';
-            el.style.opacity = el.dataset.animationDone === 'true' ? 1 : p;
-            el.style.setProperty('opacity', el.dataset.animationDone === 'true' ? 1 : p, 'important');
+            el.style.opacity = p;
         });
     }
+    
     window.addEventListener('scroll', update);
     update();
 }

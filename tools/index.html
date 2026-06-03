@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具箱 - 实用小工具</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <style>
+        /* 工具箱专用样式 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .tool-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
+        }
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tool-title i {
+            font-size: 1.5rem;
+        }
+        .tool-desc {
+            color: #475569;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .tool-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+        .tool-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+        .tool-output {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            word-break: break-all;
+            font-family: monospace;
+            margin: 0.8rem 0;
+        }
+        .tool-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .tool-btn:hover {
+            opacity: 0.85;
+        }
+        .tool-btn.small {
+            padding: 5px 12px;
+            font-size: 0.8rem;
+        }
+        .color-preview {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .flex-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        hr {
+            margin: 1rem 0;
+            border: none;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .tab-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 0.5rem;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #4f46e5;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <script src="../navbar.js"></script>
+
+    <div class="container">
+        <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa">🛠️ 前端工具箱</span></h1>
+        <p>日常开发中常用的实用小工具，全部在浏览器本地运行。</p>
+
+        <!-- 标签页切换 -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="text">📝 文本工具</button>
+            <button class="tab-btn" data-tab="color">🎨 颜色工具</button>
+            <button class="tab-btn" data-tab="encode">🔐 编码解码</button>
+            <button class="tab-btn" data-tab="time">⏰ 时间转换</button>
+        </div>
+
+        <!-- ========== 文本工具 ========== -->
+        <div id="tab-text" class="tab-content active">
+            <div class="tools-grid">
+                <!-- 字符计数器 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-font"></i> 字符计数器</div>
+                    <div class="tool-desc">统计文字长度、中文字符数、英文字符数</div>
+                    <textarea id="charInput" class="tool-input" rows="3" placeholder="输入文字..."></textarea>
+                    <div id="charResult" class="tool-output">总字符: 0 | 中文: 0 | 英文: 0 | 数字: 0</div>
+                </div>
+
+                <!-- 大小写转换 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-text-height"></i> 大小写转换</div>
+                    <div class="tool-desc">转换为全大写、全小写、首字母大写</div>
+                    <input type="text" id="caseInput" class="tool-input" placeholder="输入文本...">
+                    <div>
+                        <button class="tool-btn small" onclick="toUpperCase()">全部大写</button>
+                        <button class="tool-btn small" onclick="toLowerCase()">全部小写</button>
+                        <button class="tool-btn small" onclick="toTitleCase()">首字母大写</button>
+                    </div>
+                    <div id="caseOutput" class="tool-output">结果将显示在这里</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 颜色工具 ========== -->
+        <div id="tab-color" class="tab-content">
+            <div class="tools-grid">
+                <!-- 颜色格式转换 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-paint-brush"></i> 颜色转换器</div>
+                    <div class="tool-desc">HEX ↔ RGB 互相转换</div>
+                    <input type="text" id="colorInput" class="tool-input" placeholder="#4f46e5 或 rgb(79,70,229)">
+                    <button class="tool-btn" onclick="convertColor()">转换</button>
+                    <div id="colorOutput" class="tool-output">等待输入...</div>
+                    <div class="flex-row">
+                        <span>预览：</span>
+                        <div id="colorPreview" class="color-preview" style="background: #4f46e5;"></div>
+                    </div>
+                </div>
+
+                <!-- 随机颜色生成器 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-magic"></i> 随机颜色</div>
+                    <div class="tool-desc">生成随机颜色和渐变色方案</div>
+                    <button class="tool-btn" onclick="generateRandomColor()">生成随机颜色</button>
+                    <button class="tool-btn" onclick="generateRandomGradient()">生成随机渐变</button>
+                    <div id="randomColorOutput" class="tool-output" style="text-align: center;">
+                        <div id="randomColorBox" style="height: 60px; border-radius: 12px; background: #4f46e5; margin-bottom: 8px;"></div>
+                        <code id="randomColorCode">#4f46e5</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 编码解码 ========== -->
+        <div id="tab-encode" class="tab-content">
+            <div class="tools-grid">
+                <!-- Base64 编解码 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-code"></i> Base64 编解码</div>
+                    <div class="tool-desc">文本与Base64互相转换</div>
+                    <textarea id="base64Input" class="tool-input" rows="2" placeholder="输入文本..."></textarea>
+                    <div>
+                        <button class="tool-btn small" onclick="encodeBase64()">编码 →</button>
+                        <button class="tool-btn small" onclick="decodeBase64()">← 解码</button>
+                    </div>
+                    <div id="base64Output" class="tool-output">结果</div>
+                </div>
+
+                <!-- URL 编解码 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-link"></i> URL 编解码</div>
+                    <div class="tool-desc">URL编码与解码（处理特殊字符）</div>
+                    <textarea id="urlInput" class="tool-input" rows="2" placeholder="输入URL或文本..."></textarea>
+                    <div>
+                        <button class="tool-btn small" onclick="encodeURL()">编码</button>
+                        <button class="tool-btn small" onclick="decodeURL()">解码</button>
+                    </div>
+                    <div id="urlOutput" class="tool-output">结果</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== 时间转换 ========== -->
+        <div id="tab-time" class="tab-content">
+            <div class="tools-grid">
+                <!-- 时间戳转换 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-clock-o"></i> 时间戳转换器</div>
+                    <div class="tool-desc">Unix时间戳 ↔ 日期时间</div>
+                    <input type="text" id="timestampInput" class="tool-input" placeholder="输入时间戳（秒）">
+                    <button class="tool-btn" onclick="timestampToDate()">时间戳 → 日期</button>
+                    <div id="timestampOutput" class="tool-output">结果</div>
+                    <hr>
+                    <input type="datetime-local" id="dateInput" class="tool-input">
+                    <button class="tool-btn" onclick="dateToTimestamp()">日期 → 时间戳</button>
+                    <div id="dateOutput" class="tool-output">结果</div>
+                    <button class="tool-btn small" onclick="copyCurrentTimestamp()">📋 复制当前时间戳</button>
+                </div>
+
+                <!-- 相对时间 -->
+                <div class="tool-card">
+                    <div class="tool-title"><i class="fa fa-calendar"></i> 时间差计算</div>
+                    <div class="tool-desc">计算两个日期之间的天数差</div>
+                    <input type="date" id="date1" class="tool-input">
+                    <input type="date" id="date2" class="tool-input">
+                    <button class="tool-btn" onclick="calculateDateDiff()">计算相差天数</button>
+                    <div id="dateDiffOutput" class="tool-output">结果</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../common.js"></script>
+    <script>
+        // ========== 标签页切换 ==========
+        function initTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    // 切换按钮样式
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    // 切换内容
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+        }
+
+        // ========== 字符计数器 ==========
+        function initCharCounter() {
+            const input = document.getElementById('charInput');
+            if (!input) return;
+            input.addEventListener('input', () => {
+                const text = input.value;
+                const total = text.length;
+                const chinese = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+                const english = (text.match(/[a-zA-Z]/g) || []).length;
+                const numbers = (text.match(/[0-9]/g) || []).length;
+                document.getElementById('charResult').innerHTML = `总字符: ${total} | 中文: ${chinese} | 英文: ${english} | 数字: ${numbers}`;
+            });
+        }
+
+        // ========== 大小写转换 ==========
+        window.toUpperCase = function() {
+            const input = document.getElementById('caseInput').value;
+            document.getElementById('caseOutput').innerText = input.toUpperCase();
+        };
+        window.toLowerCase = function() {
+            const input = document.getElementById('caseInput').value;
+            document.getElementById('caseOutput').innerText = input.toLowerCase();
+        };
+        window.toTitleCase = function() {
+            const input = document.getElementById('caseInput').value;
+            const result = input.replace(/\b\w/g, c => c.toUpperCase());
+            document.getElementById('caseOutput').innerText = result;
+        };
+
+        // ========== 颜色转换 ==========
+        window.convertColor = function() {
+            const input = document.getElementById('colorInput').value.trim();
+            const output = document.getElementById('colorOutput');
+            const preview = document.getElementById('colorPreview');
+            
+            // HEX 转 RGB
+            if (input.startsWith('#')) {
+                const hex = input.slice(1);
+                if (/^[0-9A-Fa-f]{6}$/.test(hex) || /^[0-9A-Fa-f]{3}$/.test(hex)) {
+                    let r, g, b;
+                    if (hex.length === 3) {
+                        r = parseInt(hex[0] + hex[0], 16);
+                        g = parseInt(hex[1] + hex[1], 16);
+                        b = parseInt(hex[2] + hex[2], 16);
+                    } else {
+                        r = parseInt(hex.slice(0,2), 16);
+                        g = parseInt(hex.slice(2,4), 16);
+                        b = parseInt(hex.slice(4,6), 16);
+                    }
+                    const rgb = `rgb(${r}, ${g}, ${b})`;
+                    output.innerHTML = `RGB: ${rgb}`;
+                    preview.style.background = input;
+                } else {
+                    output.innerHTML = '❌ 无效的HEX颜色';
+                }
+            }
+            // RGB 转 HEX
+            else if (input.startsWith('rgb')) {
+                const match = input.match(/\d+/g);
+                if (match && match.length >= 3) {
+                    const hex = '#' + match.slice(0,3).map(x => {
+                        const hexVal = parseInt(x).toString(16);
+                        return hexVal.length === 1 ? '0' + hexVal : hexVal;
+                    }).join('');
+                    output.innerHTML = `HEX: ${hex.toUpperCase()}`;
+                    preview.style.background = hex;
+                } else {
+                    output.innerHTML = '❌ 无效的RGB格式，示例: rgb(79,70,229)';
+                }
+            } else {
+                output.innerHTML = '请输入 HEX (#4f46e5) 或 RGB (rgb(79,70,229))';
+            }
+        };
+
+        window.generateRandomColor = function() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            document.getElementById('randomColorBox').style.background = color;
+            document.getElementById('randomColorCode').innerText = color;
+        };
+
+        window.generateRandomGradient = function() {
+            const color1 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            const color2 = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            const gradient = `linear-gradient(135deg, ${color1}, ${color2})`;
+            document.getElementById('randomColorBox').style.background = gradient;
+            document.getElementById('randomColorCode').innerText = `${color1} → ${color2}`;
+        };
+
+        // ========== Base64 ==========
+        window.encodeBase64 = function() {
+            const input = document.getElementById('base64Input').value;
+            try {
+                const encoded = btoa(unescape(encodeURIComponent(input)));
+                document.getElementById('base64Output').innerText = encoded;
+            } catch(e) {
+                document.getElementById('base64Output').innerText = '编码失败: ' + e.message;
+            }
+        };
+        window.decodeBase64 = function() {
+            const input = document.getElementById('base64Input').value;
+            try {
+                const decoded = decodeURIComponent(escape(atob(input)));
+                document.getElementById('base64Output').innerText = decoded;
+            } catch(e) {
+                document.getElementById('base64Output').innerText = '解码失败: ' + e.message;
+            }
+        };
+
+        // ========== URL编解码 ==========
+        window.encodeURL = function() {
+            const input = document.getElementById('urlInput').value;
+            document.getElementById('urlOutput').innerText = encodeURIComponent(input);
+        };
+        window.decodeURL = function() {
+            const input = document.getElementById('urlInput').value;
+            try {
+                document.getElementById('urlOutput').innerText = decodeURIComponent(input);
+            } catch(e) {
+                document.getElementById('urlOutput').innerText = '解码失败: ' + e.message;
+            }
+        };
+
+        // ========== 时间戳转换 ==========
+        window.timestampToDate = function() {
+            const ts = parseInt(document.getElementById('timestampInput').value);
+            if (isNaN(ts)) {
+                document.getElementById('timestampOutput').innerText = '❌ 请输入有效数字';
+                return;
+            }
+            const date = new Date(ts * 1000);
+            document.getElementById('timestampOutput').innerHTML = `📅 ${date.toLocaleString('zh-CN')}`;
+        };
+        window.dateToTimestamp = function() {
+            const dateStr = document.getElementById('dateInput').value;
+            if (!dateStr) {
+                document.getElementById('dateOutput').innerText = '❌ 请选择日期时间';
+                return;
+            }
+            const ts = Math.floor(new Date(dateStr).getTime() / 1000);
+            document.getElementById('dateOutput').innerHTML = `🕐 ${ts}`;
+        };
+        window.copyCurrentTimestamp = function() {
+            const ts = Math.floor(Date.now() / 1000);
+            navigator.clipboard.writeText(ts.toString());
+            alert(`当前时间戳 ${ts} 已复制`);
+        };
+
+        // ========== 时间差计算 ==========
+        window.calculateDateDiff = function() {
+            const date1 = document.getElementById('date1').value;
+            const date2 = document.getElementById('date2').value;
+            if (!date1 || !date2) {
+                document.getElementById('dateDiffOutput').innerText = '❌ 请选择两个日期';
+                return;
+            }
+            const d1 = new Date(date1);
+            const d2 = new Date(date2);
+            const diffTime = Math.abs(d2 - d1);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('dateDiffOutput').innerHTML = `📅 相差 ${diffDays} 天`;
+        };
+
+        // 初始化字符计数器
+        initCharCounter();
+        initTabs();
+        
+        // 设置默认日期（今天和7天后）
+        const today = new Date().toISOString().split('T')[0];
+        const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+        if (document.getElementById('date1')) document.getElementById('date1').value = today;
+        if (document.getElementById('date2')) document.getElementById('date2').value = nextWeek;
+    </script>
+</body>
+</html>

@@ -420,6 +420,23 @@
                     </div>
                 </div>
             </div>
+            <!-- ========== 4. 全屏图片 ========== -->
+            <div class="tool-card">
+                <div class="tool-title">
+                    <i class="fa fa-arrows-alt"></i>
+                    <span>🖼️ 全屏图片</span>
+                </div>
+                <div class="color-editor" style="text-align: center;">
+                    <div id="fullscreenPreview" style="width: 100%; height: 150px; background: url('/image-2.png') center/cover no-repeat; border-radius: 16px; margin-bottom: 1rem;">
+                    </div>
+                    <div class="color-input-group">
+                        <button class="tool-btn" id="fullscreenBtn" style="flex: 1; background: linear-gradient(135deg, #4f46e5, #7c3aed);"><i class="fa fa-arrows-alt"></i> 进入全屏模式</button>
+                    </div>
+                    <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem;">
+                        <i class="fa fa-info-circle"></i> 提示：进入全屏后，<strong>长按 Esc 键约2秒</strong>即可退出全屏
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -807,6 +824,109 @@
         }
         
         window.showToast = showToast;
+                // ==================== 全屏图片功能（固定图片） ====================
+        const FULLSCREEN_IMAGE_URL = '/image-2.png';  // 固定使用这张图片
+        let isFullscreen = false;
+        
+        // 创建全屏遮罩层
+        function createFullscreenOverlay() {
+            let overlay = document.getElementById('fullscreenOverlay');
+            if (overlay) return overlay;
+            
+            overlay = document.createElement('div');
+            overlay.id = 'fullscreenOverlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: black;
+                z-index: 99999;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            `;
+            
+            const img = document.createElement('img');
+            img.id = 'fullscreenImage';
+            img.src = FULLSCREEN_IMAGE_URL;
+            img.style.cssText = `
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            `;
+            overlay.appendChild(img);
+            
+            const exitHint = document.createElement('div');
+            exitHint.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                color: rgba(255,255,255,0.7);
+                background: rgba(0,0,0,0.5);
+                padding: 8px 16px;
+                border-radius: 30px;
+                font-size: 14px;
+                font-family: monospace;
+                pointer-events: none;
+                z-index: 100000;
+            `;
+            exitHint.innerHTML = '⚠️ 长按 Esc 键 2 秒退出全屏';
+            overlay.appendChild(exitHint);
+            
+            document.body.appendChild(overlay);
+            return overlay;
+        }
+        
+        // 进入全屏
+        function enterFullscreen() {
+            const overlay = createFullscreenOverlay();
+            overlay.style.display = 'flex';
+            isFullscreen = true;
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 退出全屏
+        function exitFullscreen() {
+            const overlay = document.getElementById('fullscreenOverlay');
+            if (overlay) {
+                overlay.style.display = 'none';
+            }
+            isFullscreen = false;
+            document.body.style.overflow = '';
+            if (escPressTimer) {
+                clearTimeout(escPressTimer);
+                escPressTimer = null;
+            }
+        }
+        
+        // 监听 Esc 键（长按检测）
+        let escStartTime = null;
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                if (!isFullscreen) return;
+                if (!escStartTime) {
+                    escStartTime = Date.now();
+                }
+                const pressDuration = Date.now() - escStartTime;
+                if (pressDuration >= 2000) {
+                    exitFullscreen();
+                    escStartTime = null;
+                }
+            }
+        });
+        
+        document.addEventListener('keyup', function(e) {
+            if (e.key === 'Escape' || e.keyCode === 27) {
+                escStartTime = null;
+            }
+        });
+        
+        // 绑定全屏按钮
+        document.getElementById('fullscreenBtn')?.addEventListener('click', enterFullscreen);
     </script>
 </body>
 </html>

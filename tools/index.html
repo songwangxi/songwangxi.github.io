@@ -819,7 +819,6 @@
             toast.style.opacity = '1';
             setTimeout(() => { toast.style.opacity = '0'; }, 1500);
         }
-        
         window.showToast = showToast;
         // ==================== 全屏图片功能 ====================
         const FULLSCREEN_IMAGE_URL = '/image-2.png';
@@ -857,10 +856,21 @@
             return container;
         }
         
+        // 隐藏滚动条
+        function hideScrollbar() {
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // 显示滚动条
+        function showScrollbar() {
+            document.body.style.overflow = '';
+        }
+        
         // 进入全屏模式并显示图片
         function enterFullscreenWithImage() {
             const container = createFullscreenContainer();
             container.style.display = 'flex';
+            hideScrollbar();  // 隐藏滚动条
             
             const elem = document.documentElement;
             const requestFullscreen = elem.requestFullscreen ||
@@ -882,6 +892,7 @@
                 const container = document.getElementById('fullscreenImageContainer');
                 if (!isFullscreen && container) {
                     container.style.display = 'none';
+                    showScrollbar();  // 恢复滚动条
                 }
             }
             

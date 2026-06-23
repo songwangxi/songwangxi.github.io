@@ -58,12 +58,9 @@
             font-weight: 600;
             line-height: 1.4;
             margin-bottom: 0.5rem;
-        }
-        /* 标题链接颜色继承 link-underline 的样式，只需要微调 */
-        .post-card .post-title.link-underline {
             color: #1e293b;
         }
-        .post-card .post-title.link-underline:hover {
+        .post-card .post-title:hover {
             color: #4f46e5;
         }
 
@@ -112,9 +109,6 @@
         .post-card .read-more {
             font-size: 0.85rem;
             font-weight: 500;
-        }
-        /* 阅读全文使用 link-underline 样式 */
-        .post-card .read-more.link-underline {
             color: #4f46e5;
         }
 
@@ -131,7 +125,6 @@
             margin-bottom: 1rem;
         }
 
-        /* 响应式 */
         @media (max-width: 600px) {
             .blog-container {
                 padding: 1.2rem 1rem;
@@ -147,10 +140,8 @@
 </head>
 <body>
 
-    <!-- 导航栏 -->
     <script src="../navbar.js"></script>
 
-    <!-- 博客内容 -->
     <div class="container blog-container">
         <div class="blog-header">
             <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa"><i class="fa fa-book"></i> 我的博客</span></h1>
@@ -158,12 +149,10 @@
         </div>
 
         <div class="post-grid" id="postGrid">
-            <!-- 文章卡片由 JavaScript 动态生成 -->
         </div>
     </div>
 
     <script>
-        // ========== 文章数据 ==========
         const posts = [
             {
                 title: "Hello World！我的第一篇博客",
@@ -172,17 +161,8 @@
                 excerpt: "终于开始写博客了！用 GitHub Pages 搭建个人博客，记录学习与生活的点滴。",
                 url: "/blog/posts/2026-06-23-hello-world.html"
             }
-            // 新增文章在这里添加：
-            // {
-            //     title: "第二篇文章标题",
-            //     date: "2026-06-24",
-            //     tags: ["标签1", "标签2"],
-            //     excerpt: "文章简介，会显示在卡片上...",
-            //     url: "/blog/posts/2026-06-24-article-title.html"
-            // }
         ];
 
-        // ========== 渲染文章卡片 ==========
         function renderPosts() {
             const grid = document.getElementById('postGrid');
 
@@ -196,7 +176,6 @@
                 return;
             }
 
-            // 按日期从新到旧排序
             const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
             grid.innerHTML = sorted.map(post => `

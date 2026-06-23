@@ -8,66 +8,130 @@
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <style>
-        /* 博客专用样式 - 仅覆盖内容区域 */
+        /* 博客专用样式 */
         .blog-container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
         }
 
         .blog-header {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
         }
         .blog-header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.2rem;
+            font-size: 2.2rem;
+            margin-bottom: 0.3rem;
         }
         .blog-header .subtitle {
             color: #64748b;
             font-size: 1rem;
         }
 
-        .post-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+        /* 文章卡片网格 */
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
         }
-        .post-item:last-child {
-            border-bottom: none;
+
+        /* 单张卡片 */
+        .post-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
         }
-        .post-item .post-title {
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .post-card .post-title {
             font-size: 1.15rem;
             font-weight: 600;
             color: #1e293b;
             text-decoration: none;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
         }
-        .post-item .post-title:hover {
+        .post-card .post-title:hover {
             color: #4f46e5;
         }
-        .post-item .post-meta {
-            color: #94a3b8;
-            font-size: 0.85rem;
-            margin-top: 2px;
+
+        .post-card .post-excerpt {
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 0.8rem;
         }
-        .post-item .post-meta i {
+
+        .post-card .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding-top: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
+        .post-card .post-meta {
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+        .post-card .post-meta i {
             margin-right: 4px;
         }
-        .post-tag {
+
+        .post-card .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .post-card .post-tag {
             display: inline-block;
-            background: rgba(79,70,229,0.12);
+            background: rgba(79,70,229,0.10);
             color: #4f46e5;
             padding: 0 10px;
             border-radius: 20px;
             font-size: 0.7rem;
-            margin-left: 4px;
+            line-height: 1.8;
         }
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
+
+        .post-card .read-more {
             color: #4f46e5;
+            font-size: 0.85rem;
+            font-weight: 500;
             text-decoration: none;
         }
-        .back-link:hover {
+        .post-card .read-more:hover {
             text-decoration: underline;
+        }
+        .post-card .read-more i {
+            font-size: 0.7rem;
+            margin-left: 4px;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            padding: 3rem 0;
+            grid-column: 1 / -1;
+        }
+        .empty-state i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
         }
 
         /* 响应式 */
@@ -76,25 +140,28 @@
                 padding: 1.2rem 1rem;
             }
             .blog-header h1 {
-                font-size: 1.5rem;
+                font-size: 1.6rem;
+            }
+            .post-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 导航栏（使用你现有的 navbar.js） -->
+    <!-- 导航栏 -->
     <script src="../navbar.js"></script>
 
     <!-- 博客内容 -->
     <div class="container blog-container">
         <div class="blog-header">
-            <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa">📝 我的博客</span></h1>
-            <p class="subtitle">记录学习与生活的点滴</p>
+            <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa"><i class="fa fa-book"></i> 我的博客</span></h1>
+            <p class="subtitle"><i class="fa fa-pencil-square-o"></i> 记录学习与生活的点滴</p>
         </div>
 
-        <div id="postList">
-            <!-- 文章列表由 JavaScript 动态生成 -->
+        <div class="post-grid" id="postGrid">
+            <!-- 文章卡片由 JavaScript 动态生成 -->
         </div>
     </div>
 
@@ -105,6 +172,7 @@
                 title: "Hello World！我的第一篇博客",
                 date: "2026-06-23",
                 tags: ["生活", "随想"],
+                excerpt: "终于开始写博客了！用 GitHub Pages 搭建个人博客，记录学习与生活的点滴。",
                 url: "/blog/posts/2026-06-23-hello-world.html"
             }
             // 新增文章在这里添加：
@@ -112,27 +180,44 @@
             //     title: "第二篇文章标题",
             //     date: "2026-06-24",
             //     tags: ["标签1", "标签2"],
+            //     excerpt: "文章简介，会显示在卡片上...",
             //     url: "/blog/posts/2026-06-24-article-title.html"
             // }
         ];
 
-        // ========== 渲染文章列表 ==========
+        // ========== 渲染文章卡片 ==========
         function renderPosts() {
-            const container = document.getElementById('postList');
+            const grid = document.getElementById('postGrid');
+
             if (posts.length === 0) {
-                container.innerHTML = '<p style="color: #94a3b8; padding: 1rem 0;">还没有文章，马上写第一篇！</p>';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div><i class="fa fa-book"></i></div>
+                        <p>还没有文章，马上写第一篇！</p>
+                    </div>
+                `;
                 return;
             }
 
             // 按日期从新到旧排序
             const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
-            container.innerHTML = sorted.map(post => `
-                <div class="post-item">
+            grid.innerHTML = sorted.map(post => `
+                <div class="post-card">
                     <a href="${post.url}" class="post-title">${post.title}</a>
-                    <div class="post-meta">
-                        <i class="fa fa-calendar"></i> ${post.date}
-                        ${post.tags.map(tag => `<span class="post-tag">#${tag}</span>`).join('')}
+                    <p class="post-excerpt">${post.excerpt || '暂无摘要'}</p>
+                    <div class="post-footer">
+                        <span class="post-meta">
+                            <i class="fa fa-calendar"></i> ${post.date}
+                        </span>
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="post-tag"><i class="fa fa-tag"></i> ${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.6rem; text-align: right;">
+                        <a href="${post.url}" class="read-more">
+                            阅读全文 <i class="fa fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             `).join('');

@@ -7,6 +7,7 @@
             <a href="/share/"><i class="fa fa-share-alt"></i> 分享留言</a>
             <a href="/tools/"><i class="fa fa-wrench"></i> 工具箱</a>
             <a href="https://songwangxi.freeflarum.com"><i class="fa fa-comments"></i> 论坛</a>
+            <a href="/blog/"><i class="fa fa-book"></i> 博客</a>
         </div>
     </nav>`;
     document.body.insertAdjacentHTML('afterbegin', navHTML);

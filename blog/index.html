@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <style>
-        /* 博客专用样式 */
+        /* 仅保留博客布局，所有颜色/卡片/链接样式来自 common.css */
         .blog-container {
             max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
         }
-
         .blog-header {
             margin-bottom: 2.5rem;
             text-align: center;
@@ -27,43 +26,11 @@
             color: #64748b;
             font-size: 1rem;
         }
-
-        /* 文章卡片网格 */
         .post-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
         }
-
-        /* 单张卡片 */
-        .post-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 1.5rem 1.8rem;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            display: flex;
-            flex-direction: column;
-        }
-        .post-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-        }
-
-        .post-card .post-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            line-height: 1.4;
-            margin-bottom: 0.5rem;
-            color: #1e293b;
-        }
-        .post-card .post-title:hover {
-            color: #4f46e5;
-        }
-
         .post-card .post-excerpt {
             color: #475569;
             font-size: 0.9rem;
@@ -71,18 +38,6 @@
             flex: 1;
             margin-bottom: 0.8rem;
         }
-
-        .post-card .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            padding-top: 0.8rem;
-            margin-top: 0.3rem;
-        }
-
         .post-card .post-meta {
             color: #94a3b8;
             font-size: 0.8rem;
@@ -90,7 +45,6 @@
         .post-card .post-meta i {
             margin-right: 4px;
         }
-
         .post-card .post-tags {
             display: flex;
             flex-wrap: wrap;
@@ -105,14 +59,6 @@
             font-size: 0.7rem;
             line-height: 1.8;
         }
-
-        .post-card .read-more {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #4f46e5;
-        }
-
-        /* 空状态 */
         .empty-state {
             text-align: center;
             color: #94a3b8;
@@ -124,7 +70,6 @@
             color: #cbd5e1;
             margin-bottom: 1rem;
         }
-
         @media (max-width: 600px) {
             .blog-container {
                 padding: 1.2rem 1rem;
@@ -179,10 +124,10 @@
             const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 
             grid.innerHTML = sorted.map(post => `
-                <div class="post-card">
-                    <a href="${post.url}" class="post-title link-underline">${post.title}</a>
+                <div class="card post-card card-tilt">
+                    <a href="${post.url}" class="post-title link-underline" style="font-size:1.15rem;font-weight:600;line-height:1.4;margin-bottom:0.5rem;color:#1e293b;">${post.title}</a>
                     <p class="post-excerpt">${post.excerpt || '暂无摘要'}</p>
-                    <div class="post-footer">
+                    <div class="post-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;border-top:1px solid rgba(0,0,0,0.05);padding-top:0.8rem;margin-top:0.3rem;">
                         <span class="post-meta">
                             <i class="fa fa-calendar"></i> ${post.date}
                         </span>
@@ -191,7 +136,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 0.6rem; text-align: right;">
-                        <a href="${post.url}" class="read-more link-underline">
+                        <a href="${post.url}" class="link-underline" style="color:#4f46e5;font-size:0.85rem;font-weight:500;">
                             阅读全文 <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>

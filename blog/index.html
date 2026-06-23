@@ -56,12 +56,14 @@
         .post-card .post-title {
             font-size: 1.15rem;
             font-weight: 600;
-            color: #1e293b;
-            text-decoration: none;
             line-height: 1.4;
             margin-bottom: 0.5rem;
         }
-        .post-card .post-title:hover {
+        /* 标题链接颜色继承 link-underline 的样式，只需要微调 */
+        .post-card .post-title.link-underline {
+            color: #1e293b;
+        }
+        .post-card .post-title.link-underline:hover {
             color: #4f46e5;
         }
 
@@ -108,17 +110,12 @@
         }
 
         .post-card .read-more {
-            color: #4f46e5;
             font-size: 0.85rem;
             font-weight: 500;
-            text-decoration: none;
         }
-        .post-card .read-more:hover {
-            text-decoration: underline;
-        }
-        .post-card .read-more i {
-            font-size: 0.7rem;
-            margin-left: 4px;
+        /* 阅读全文使用 link-underline 样式 */
+        .post-card .read-more.link-underline {
+            color: #4f46e5;
         }
 
         /* 空状态 */
@@ -204,7 +201,7 @@
 
             grid.innerHTML = sorted.map(post => `
                 <div class="post-card">
-                    <a href="${post.url}" class="post-title">${post.title}</a>
+                    <a href="${post.url}" class="post-title link-underline">${post.title}</a>
                     <p class="post-excerpt">${post.excerpt || '暂无摘要'}</p>
                     <div class="post-footer">
                         <span class="post-meta">
@@ -215,7 +212,7 @@
                         </div>
                     </div>
                     <div style="margin-top: 0.6rem; text-align: right;">
-                        <a href="${post.url}" class="read-more">
+                        <a href="${post.url}" class="read-more link-underline">
                             阅读全文 <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <style>
-        /* 仅保留博客布局，所有颜色/卡片/链接样式来自 common.css */
         .blog-container {
             max-width: 900px;
             margin: 0 auto;
@@ -44,20 +43,6 @@
         }
         .post-card .post-meta i {
             margin-right: 4px;
-        }
-        .post-card .post-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .post-card .post-tag {
-            display: inline-block;
-            background: rgba(79,70,229,0.10);
-            color: #4f46e5;
-            padding: 0 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            line-height: 1.8;
         }
         .empty-state {
             text-align: center;
@@ -101,10 +86,7 @@
         const posts = [
             {
                 title: "Hello World！我的第一篇博客",
-                date: "2026-06-23",
-                tags: ["生活", "随想"],
-                excerpt: "终于开始写博客了！用 GitHub Pages 搭建个人博客，记录学习与生活的点滴。",
-                url: "/blog/posts/2026-06-23-hello-world.html"
+                file: "2026-06-23-hello-world"
             }
         ];
 
@@ -121,22 +103,19 @@
                 return;
             }
 
-            const sorted = [...posts].sort((a, b) => b.date.localeCompare(a.date));
+            const sorted = [...posts].sort((a, b) => b.file.localeCompare(a.file));
 
             grid.innerHTML = sorted.map(post => `
                 <div class="card post-card card-tilt">
-                    <a href="${post.url}" class="post-title link-underline" style="font-size:1.15rem;font-weight:600;line-height:1.4;margin-bottom:0.5rem;color:#1e293b;">${post.title}</a>
-                    <p class="post-excerpt">${post.excerpt || '暂无摘要'}</p>
+                    <a href="post.html?post=${post.file}" class="post-title link-underline" style="font-size:1.15rem;font-weight:600;line-height:1.4;margin-bottom:0.5rem;color:#1e293b;">${post.title}</a>
+                    <p class="post-excerpt">点击阅读全文...</p>
                     <div class="post-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;border-top:1px solid rgba(0,0,0,0.05);padding-top:0.8rem;margin-top:0.3rem;">
                         <span class="post-meta">
-                            <i class="fa fa-calendar"></i> ${post.date}
+                            <i class="fa fa-calendar"></i> ${post.file.slice(0, 10)}
                         </span>
-                        <div class="post-tags">
-                            ${post.tags.map(tag => `<span class="post-tag"><i class="fa fa-tag"></i> ${tag}</span>`).join('')}
-                        </div>
                     </div>
                     <div style="margin-top: 0.6rem; text-align: right;">
-                        <a href="${post.url}" class="link-underline" style="color:#4f46e5;font-size:0.85rem;font-weight:500;">
+                        <a href="post.html?post=${post.file}" class="link-underline" style="color:#4f46e5;font-size:0.85rem;font-weight:500;">
                             阅读全文 <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>

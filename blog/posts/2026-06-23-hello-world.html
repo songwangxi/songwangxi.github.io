@@ -8,13 +8,11 @@
     <link rel="stylesheet" href="../../common.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <style>
-        /* 文章专用样式 */
         .post-container {
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
         }
-
         .post-header {
             border-bottom: 1px solid rgba(0,0,0,0.06);
             padding-bottom: 1rem;
@@ -33,14 +31,13 @@
         }
         .post-tag {
             display: inline-block;
-            background: rgba(79,70,229,0.12);
+            background: rgba(79,70,229,0.10);
             color: #4f46e5;
             padding: 0 10px;
             border-radius: 20px;
             font-size: 0.7rem;
             margin-left: 4px;
         }
-
         .post-content {
             line-height: 1.9;
             font-size: 1.05rem;
@@ -52,58 +49,17 @@
             margin-bottom: 0.5rem;
             color: #1e293b;
         }
-        .post-content h3 {
-            font-size: 1.15rem;
-            margin-top: 1.4rem;
-            color: #1e293b;
-        }
-        .post-content ul, .post-content ol {
+        .post-content ul {
             padding-left: 1.5rem;
             margin: 0.5rem 0 1rem;
         }
         .post-content li {
             margin-bottom: 0.3rem;
         }
-        .post-content code {
-            background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        .post-content pre {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-size: 0.85rem;
-            margin: 1rem 0;
-        }
-        .post-content blockquote {
-            border-left: 4px solid #4f46e5;
-            padding-left: 1rem;
-            margin: 1rem 0;
-            color: #64748b;
-            background: rgba(79,70,229,0.04);
-            padding: 0.5rem 1rem;
-            border-radius: 0 8px 8px 0;
-        }
-        .post-content img {
-            max-width: 100%;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
         .back-link {
             display: inline-block;
             margin-top: 2.5rem;
-            color: #4f46e5;
-            text-decoration: none;
         }
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
         @media (max-width: 600px) {
             .post-container {
                 padding: 1.2rem 1rem;
@@ -116,38 +72,36 @@
 </head>
 <body>
 
-    <!-- 导航栏 -->
     <script src="../../navbar.js"></script>
 
-    <!-- 文章内容 -->
     <div class="container post-container">
         <div class="post-header">
             <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa">Hello World！我的第一篇博客</span></h1>
             <div class="post-meta">
                 <i class="fa fa-calendar"></i> 2026-06-23
-                <span class="post-tag">#生活</span>
-                <span class="post-tag">#随想</span>
+                <span class="post-tag"><i class="fa fa-tag"></i> 生活</span>
+                <span class="post-tag"><i class="fa fa-tag"></i> 随想</span>
             </div>
         </div>
 
         <div class="post-content">
-            <h2>🎉 终于开始了！</h2>
+            <h2>终于开始了！</h2>
             <p>你好！这是我的第一篇博客文章。</p>
             <p>用 GitHub Pages 搭建这个博客，比我想象中要简单很多。</p>
 
             <h2>为什么选择 GitHub Pages？</h2>
             <ul>
-                <li>✅ 完全免费</li>
-                <li>✅ 支持自定义域名</li>
-                <li>✅ 可以写 Markdown</li>
-                <li>✅ 版本控制</li>
-                <li>✅ 全世界都能访问</li>
+                <li>完全免费</li>
+                <li>支持自定义域名</li>
+                <li>可以写 Markdown</li>
+                <li>版本控制</li>
+                <li>全世界都能访问</li>
             </ul>
 
             <p>接下来我会在这里分享更多学习笔记和生活感悟，敬请期待！</p>
         </div>
 
-        <a href="/blog/" class="back-link"><i class="fa fa-arrow-left"></i> 返回博客列表</a>
+        <a href="/blog/" class="back-link link-underline"><i class="fa fa-arrow-left"></i> 返回博客列表</a>
     </div>
 
 </body>

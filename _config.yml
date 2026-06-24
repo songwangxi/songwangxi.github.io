@@ -1,19 +1,7 @@
 # 根目录 _config.yml
+# 只配置博客相关的，不要排除任何文件
 title: "我的网站"
-description: "个人网站 & 博客"
-author: "你的名字"
 url: "https://songwangxi.github.io"
 baseurl: ""
 
-# 关键：排除这些文件，Jekyll 不处理它们
-exclude:
-  - common.css
-  - common.js
-  - navbar.js
-  - share/
-  - tools/
-  - README.md
-  - .gitignore
-
-# 保留你的 index.html 不被 Jekyll 处理（但如果它包含 Jekyll 语法，还是会被处理）
-# 如果希望彻底保留原样，把它也排除
+# 不要写 exclude，让所有文件保留

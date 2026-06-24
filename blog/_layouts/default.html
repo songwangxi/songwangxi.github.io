@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
-    <link rel="stylesheet" href="{{ '/common.css' | relative_url }}">
-    <link rel="stylesheet" href="{{ '/blog/blog.css' | relative_url }}">
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/blog/blog.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 </head>
 <body>
 
-    <script src="{{ '/navbar.js' | relative_url }}"></script>
+    <script src="/navbar.js"></script>
 
-    <!-- 页面的具体内容会插入到这里 -->
     {{ content }}
 
 </body>

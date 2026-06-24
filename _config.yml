@@ -1,3 +1,15 @@
-# 根目录 _config.yml
-# 由于使用了 .nojekyll，此文件仅作为 blog 子目录的配置入口
-# 可以保留空内容或仅包含博客相关的全局设置
+title: "我的网站"
+description: "个人网站 & 博客"
+author: "swx"
+url: "https://songwangxi.github.io"
+baseurl: ""
+
+include:
+  - _includes
+
+exclude:
+  - share/
+  - tools/
+  - README.md
+  - .gitignore
+  - wrangler.jsonc

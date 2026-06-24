@@ -1,9 +1,10 @@
-# blog/_config.yml
 title: "我的博客"
 description: "记录学习与生活"
 author: "swx"
 url: "https://songwangxi.github.io"
-baseurl: "/blog"   # 关键！让博客位于子目录
+baseurl: "/blog"
 
-# 文章链接格式
 permalink: /blog/:year/:month/:day/:title/
+
+# 禁用主题
+theme: null

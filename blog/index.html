@@ -6,7 +6,9 @@
     <title>我的博客</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
     <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="../blog.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         .blog-container {
             max-width: 900px;
@@ -55,6 +57,155 @@
             color: #cbd5e1;
             margin-bottom: 1rem;
         }
+        /* 文章详情页样式（覆盖列表样式） */
+        .post-detail .back-link {
+            display: inline-block;
+            margin-top: 2.5rem;
+        }
+        .post-detail .post-header {
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .post-detail .post-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+        }
+        .post-detail .post-meta {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .post-detail .post-meta i {
+            margin-right: 4px;
+        }
+        .post-detail .post-tag {
+            display: inline-block;
+            background: rgba(79,70,229,0.10);
+            color: #4f46e5;
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: 4px;
+            line-height: 1.8;
+        }
+        .post-detail .post-content {
+            line-height: 1.9;
+            font-size: 1.05rem;
+            color: #334155;
+        }
+        .post-detail .post-content h1 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            color: #1e293b;
+            border-bottom: 2px solid rgba(79,70,229,0.15);
+            padding-bottom: 0.3rem;
+        }
+        .post-detail .post-content h2 {
+            font-size: 1.6rem;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .post-detail .post-content h3 {
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        .post-detail .post-content p {
+            margin-bottom: 1rem;
+        }
+        .post-detail .post-content ul {
+            padding-left: 1.8rem;
+            margin: 0.5rem 0 1rem;
+        }
+        .post-detail .post-content ul li {
+            list-style-type: disc;
+            margin-bottom: 0.3rem;
+        }
+        .post-detail .post-content ol {
+            padding-left: 1.8rem;
+            margin: 0.5rem 0 1rem;
+        }
+        .post-detail .post-content ol li {
+            list-style-type: decimal;
+            margin-bottom: 0.3rem;
+        }
+        .post-detail .post-content code {
+            background: #f1f5f9;
+            color: #be185d;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+        }
+        .post-detail .post-content pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            line-height: 1.6;
+            margin: 1rem 0;
+        }
+        .post-detail .post-content pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: inherit;
+            border-radius: 0;
+        }
+        .post-detail .post-content blockquote {
+            border-left: 4px solid #4f46e5;
+            padding-left: 1.2rem;
+            margin: 1.2rem 0;
+            color: #475569;
+            background: rgba(79,70,229,0.04);
+            padding: 0.5rem 1rem 0.5rem 1.2rem;
+            border-radius: 0 8px 8px 0;
+        }
+        .post-detail .post-content blockquote p {
+            margin-bottom: 0.5rem;
+        }
+        .post-detail .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin: 1.2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            display: block;
+        }
+        .post-detail .post-content hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 2rem 0;
+        }
+        .post-detail .post-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+        }
+        .post-detail .post-content table th {
+            background: #f1f5f9;
+            font-weight: 600;
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        .post-detail .post-content table td {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+        }
+        .post-detail .post-content table tr:hover {
+            background: rgba(79,70,229,0.03);
+        }
+        .hidden {
+            display: none !important;
+        }
         @media (max-width: 600px) {
             .blog-container {
                 padding: 1.2rem 1rem;
@@ -65,6 +216,12 @@
             .post-grid {
                 grid-template-columns: 1fr;
             }
+            .post-detail .post-header h1 {
+                font-size: 1.5rem;
+            }
+            .post-detail .post-content {
+                font-size: 0.98rem;
+            }
         }
     </style>
 </head>
@@ -72,17 +229,36 @@
 
     <script src="../navbar.js"></script>
 
-    <div class="container blog-container">
-        <div class="blog-header">
-            <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa"><i class="fa fa-book"></i> 我的博客</span></h1>
-            <p class="subtitle"><i class="fa fa-pencil-square-o"></i> 记录学习与生活的点滴</p>
+    <div class="container blog-container" id="app">
+
+        <!-- ====== 博客列表 ====== -->
+        <div id="listView">
+            <div class="blog-header">
+                <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa"><i class="fa fa-book"></i> 我的博客</span></h1>
+                <p class="subtitle"><i class="fa fa-pencil-square-o"></i> 记录学习与生活的点滴</p>
+            </div>
+            <div class="post-grid" id="postGrid"></div>
         </div>
 
-        <div class="post-grid" id="postGrid">
+        <!-- ====== 文章详情 ====== -->
+        <div id="detailView" class="post-detail hidden">
+            <div class="post-header">
+                <h1 id="detailTitle">文章标题</h1>
+                <div class="post-meta">
+                    <i class="fa fa-calendar"></i> <span id="detailDate">日期</span>
+                    <span id="detailTags"></span>
+                </div>
+            </div>
+            <div class="post-content" id="detailContent"></div>
+            <a href="/blog/" class="back-link link-underline" onclick="showList(event)">
+                <i class="fa fa-arrow-left"></i> 返回博客列表
+            </a>
         </div>
+
     </div>
 
     <script>
+        // ========== 文章数据 ==========
         const posts = [
             {
                 title: "Hello World！我的第一篇博客",
@@ -90,6 +266,7 @@
             }
         ];
 
+        // ========== 渲染文章列表 ==========
         function renderPosts() {
             const grid = document.getElementById('postGrid');
 
@@ -107,7 +284,7 @@
 
             grid.innerHTML = sorted.map(post => `
                 <div class="card post-card card-tilt">
-                    <a href="post.html?post=${post.file}" class="post-title link-underline" style="font-size:1.15rem;font-weight:600;line-height:1.4;margin-bottom:0.5rem;color:#1e293b;">${post.title}</a>
+                    <a href="?post=${post.file}" class="post-title link-underline" style="font-size:1.15rem;font-weight:600;line-height:1.4;margin-bottom:0.5rem;color:#1e293b;">${post.title}</a>
                     <p class="post-excerpt">点击阅读全文...</p>
                     <div class="post-footer" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;border-top:1px solid rgba(0,0,0,0.05);padding-top:0.8rem;margin-top:0.3rem;">
                         <span class="post-meta">
@@ -115,7 +292,7 @@
                         </span>
                     </div>
                     <div style="margin-top: 0.6rem; text-align: right;">
-                        <a href="post.html?post=${post.file}" class="link-underline" style="color:#4f46e5;font-size:0.85rem;font-weight:500;">
+                        <a href="?post=${post.file}" class="link-underline" style="color:#4f46e5;font-size:0.85rem;font-weight:500;">
                             阅读全文 <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>
@@ -123,7 +300,102 @@
             `).join('');
         }
 
+        // ========== 显示文章详情 ==========
+        function showPost(postFile) {
+            const listView = document.getElementById('listView');
+            const detailView = document.getElementById('detailView');
+
+            // 切换视图
+            listView.classList.add('hidden');
+            detailView.classList.remove('hidden');
+
+            const mdPath = `/blog/_posts/${postFile}.md`;
+
+            fetch(mdPath)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('文章未找到');
+                    }
+                    return response.text();
+                })
+                .then(markdown => {
+                    const htmlContent = marked.parse(markdown);
+                    document.getElementById('detailContent').innerHTML = htmlContent;
+
+                    // 提取标题
+                    const lines = markdown.split('\n');
+                    let title = '文章标题';
+                    for (let line of lines) {
+                        if (line.startsWith('# ')) {
+                            title = line.replace('# ', '');
+                            break;
+                        }
+                    }
+                    document.getElementById('detailTitle').innerText = title;
+                    document.title = title + ' - 我的博客';
+
+                    // 提取日期
+                    const dateMatch = postFile.match(/(\d{4}-\d{2}-\d{2})/);
+                    if (dateMatch) {
+                        document.getElementById('detailDate').innerText = dateMatch[1];
+                    }
+
+                    // 提取标签
+                    const tagMatch = markdown.match(/tags:\s*\[(.*?)\]/);
+                    if (tagMatch) {
+                        const tags = tagMatch[1].split(',').map(t => t.trim());
+                        document.getElementById('detailTags').innerHTML = tags.map(tag =>
+                            `<span class="post-tag"><i class="fa fa-tag"></i> ${tag}</span>`
+                        ).join('');
+                    } else {
+                        document.getElementById('detailTags').innerHTML = '';
+                    }
+
+                    // 更新 URL（不刷新页面）
+                    history.pushState({ post: postFile }, '', `?post=${postFile}`);
+                })
+                .catch(error => {
+                    document.getElementById('detailContent').innerHTML = `
+                        <p style="color: #ef4444;"><i class="fa fa-exclamation-circle"></i> 文章加载失败：${error.message}</p>
+                        <p style="color: #94a3b8; font-size: 0.9rem;">请确认文件存在：<code>/blog/_posts/${postFile}.md</code></p>
+                    `;
+                });
+        }
+
+        // ========== 返回列表 ==========
+        function showList(e) {
+            if (e) e.preventDefault();
+            document.getElementById('listView').classList.remove('hidden');
+            document.getElementById('detailView').classList.add('hidden');
+            history.pushState({}, '', '/blog/');
+            document.title = '我的博客';
+        }
+
+        // ========== 路由判断 ==========
+        function handleRouting() {
+            const params = new URLSearchParams(window.location.search);
+            const postFile = params.get('post');
+
+            if (postFile) {
+                showPost(postFile);
+            } else {
+                document.getElementById('listView').classList.remove('hidden');
+                document.getElementById('detailView').classList.add('hidden');
+            }
+        }
+
+        // ========== 浏览器前进/后退 ==========
+        window.addEventListener('popstate', function(e) {
+            if (e.state && e.state.post) {
+                showPost(e.state.post);
+            } else {
+                showList(null);
+            }
+        });
+
+        // ========== 初始化 ==========
         renderPosts();
+        handleRouting();
     </script>
 
 </body>

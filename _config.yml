@@ -1,0 +1,15 @@
+# 根目录 _config.yml
+title: "我的网站"
+description: "个人网站 & 博客"
+author: "你的名字"
+url: "https://songwangxi.github.io"
+baseurl: ""   # 因为是用户站点，根目录留空
+
+# 排除现有文件，Jekyll 不处理它们
+exclude:
+  - common.css
+  - common.js
+  - navbar.js
+  - share/
+  - tools/
+  - README.md

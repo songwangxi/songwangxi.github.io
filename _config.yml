@@ -1,26 +1,3 @@
-title: "我的网站"
-description: "个人网站 & 博客"
-author: "swx"
-url: "https://songwangxi.github.io"
-baseurl: ""
-
-# 关键：排除根目录的静态文件，让它们原样保留
-exclude:
-  - index.html
-  - common.css
-  - common.js
-  - navbar.js
-  - share/
-  - tools/
-  - image-1.jpg
-  - image-2.png
-  - README.md
-  - .gitignore
-  - wrangler.jsonc
-
-# 让 blog 子目录成为 Jekyll 站点
-include:
-  - blog/
-
-# 博客文章链接格式
-permalink: /blog/:year/:month/:day/:title/
+# 根目录 _config.yml
+# 由于使用了 .nojekyll，此文件仅作为 blog 子目录的配置入口
+# 可以保留空内容或仅包含博客相关的全局设置

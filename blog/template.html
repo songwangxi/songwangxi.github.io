@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的博客 - 文章</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <link rel="stylesheet" href="../../common.css">
+    <link rel="stylesheet" href="../../blog.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+
+    <script src="../../navbar.js"></script>
+
+    <div class="container post-container">
+        <div class="post-header">
+            <h1 id="articleTitle"><span class="gradient" color1="#1e3a8a" color2="#60a5fa">文章标题</span></h1>
+            <div class="post-meta" id="articleMeta">
+                <i class="fa fa-calendar"></i> <span id="articleDate">日期</span>
+                <span id="articleTags"></span>
+            </div>
+        </div>
+
+        <!-- 文章正文从这里开始 -->
+        <div class="post-content" id="articleContent">
+            <!-- 内容由具体文章文件填充 -->
+        </div>
+        <!-- 文章正文到这里结束 -->
+
+        <a href="/blog/" class="back-link link-underline"><i class="fa fa-arrow-left"></i> 返回博客列表</a>
+    </div>
+
+    <script>
+        // ========== 从 URL 参数读取文章数据 ==========
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title') || '文章标题';
+        const date = params.get('date') || '日期';
+        const tags = params.get('tags') || '';
+        const content = params.get('content') || '';
+
+        document.getElementById('articleTitle').innerHTML = `<span class="gradient" color1="#1e3a8a" color2="#60a5fa">${title}</span>`;
+        document.getElementById('articleDate').innerText = date;
+
+        if (tags) {
+            const tagArray = tags.split(',');
+            document.getElementById('articleTags').innerHTML = tagArray.map(tag =>
+                `<span class="post-tag"><i class="fa fa-tag"></i> ${tag.trim()}</span>`
+            ).join('');
+        }
+
+        document.getElementById('articleContent').innerHTML = content;
+        document.title = title + ' - 我的博客';
+    </script>
+
+</body>
+</html>

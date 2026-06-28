@@ -121,19 +121,18 @@ ul, ol { list-style: none; }
     background: #4f46e5;
     color: #fff;
 }
-/* ====== 底部：联系方式（文字版） ====== */
+/* ====== 底部：联系方式 ====== */
 .navbar-side .nav-footer {
     margin-top: auto;
     padding-top: 1.2rem;
     border-top: 1px solid rgba(0, 0, 0, 0.06);
-    text-align: center;
 }
 
 .navbar-side .social-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px 14px;
+    gap: 6px 12px;
     margin-bottom: 0.8rem;
 }
 
@@ -141,19 +140,19 @@ ul, ol { list-style: none; }
     color: #64748b;
     font-size: 0.8rem;
     text-decoration: none;
+    padding: 2px 4px;
     transition: all 0.2s ease;
-    padding: 2px 0;
-    border-bottom: 1px solid transparent;
+    white-space: nowrap;
 }
 
 .navbar-side .social-links a:hover {
     color: #4f46e5;
-    border-bottom-color: #4f46e5;
 }
 
 .navbar-side .copyright {
     font-size: 0.7rem;
     color: #94a3b8;
+    text-align: center;
     letter-spacing: 0.3px;
 }
 /* 底部信息 */

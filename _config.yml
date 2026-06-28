@@ -1,15 +1,11 @@
-title: "我的网站"
-description: "个人网站 & 博客"
+title: "我的博客"
+description: "记录学习与生活"
 author: "swx"
 url: "https://songwangxi.github.io"
 baseurl: ""
 
-include:
-  - _includes
+# 禁用默认主题
+theme: null
 
-exclude:
-  - share/
-  - tools/
-  - README.md
-  - .gitignore
-  - wrangler.jsonc
+# 文章链接格式
+permalink: /:year/:month/:day/:title/

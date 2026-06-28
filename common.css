@@ -130,7 +130,7 @@ ul, ol { list-style: none; }
 
 .navbar-side .social-links {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 6px 12px;
     margin-bottom: 0.8rem;

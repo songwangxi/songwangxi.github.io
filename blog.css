@@ -322,3 +322,59 @@
         padding: 4px 8px;
     }
 }
+/* 分类归档页面样式 */
+.categories-archive {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tag-group {
+    margin-bottom: 2.5rem;
+}
+
+.tag-heading {
+    font-size: 1.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 2px solid #4f46e5;
+    margin-bottom: 0.8rem;
+    color: #1e293b;
+}
+
+.tag-heading i {
+    color: #4f46e5;
+    margin-right: 0.3rem;
+}
+
+.post-list-by-tag {
+    list-style: none;
+    padding-left: 1.5rem;
+}
+
+.post-list-by-tag li {
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.post-list-by-tag li a {
+    text-decoration: none;
+    color: #1e293b;
+}
+
+.post-list-by-tag li a:hover {
+    color: #4f46e5;
+    text-decoration: underline;
+}
+
+.post-list-by-tag .post-date {
+    float: right;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+    .post-list-by-tag .post-date {
+        float: none;
+        display: block;
+        font-size: 0.8rem;
+    }
+}

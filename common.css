@@ -397,18 +397,21 @@ body.no-button-gradient .toggle-btn[color1][color2] {background: #4f46e5 !import
 }
 
 /* 首页文章标题 - 渐变文字 */
+/* common.css - 首页文章标题渐变色 */
+
 .post-title {
+    /* 初始颜色为深色 (如 #1e293b)，过渡到紫色/蓝色 (如 #4f46e5) */
     background: linear-gradient(135deg, #1e293b 0%, #1e293b 50%, #4f46e5 100%);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: transparent; /* 作为 fallback */
     transition: background-position 0.7s ease;
     text-decoration: none;
     font-weight: 600;
 }
 
 .post-title:hover {
-    background-position: 100% 100%;
+    background-position: 100% 100%; /* 悬停时背景位置移动，显示渐变末端颜色 */
 }

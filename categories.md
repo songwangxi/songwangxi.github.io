@@ -4,6 +4,35 @@ title: 文章分类
 permalink: /categories/
 ---
 
+<style>
+.categories-archive {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.tag-group {
+    margin-bottom: 2.5rem;
+}
+
+.tag-heading {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #1e293b;
+    border-bottom: 2px solid #4f46e5;
+    padding-bottom: 0.3rem;
+}
+
+.tag-heading i {
+    color: #4f46e5;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+}
+</style>
+
 <div class="categories-archive">
   {% assign tags = site.tags | sort %}
   {% if tags.size > 0 %}

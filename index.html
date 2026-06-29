@@ -12,7 +12,7 @@ title: 首页
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;">
         {% for post in site.posts %}
         <div class="card card-tilt" style="padding:1.5rem 1.8rem;">
-            <a href="{{ post.url }}" class="link-underline" style="font-size:1.15rem;font-weight:600;color:#1e293b;text-decoration:none;">{{ post.title }}</a>
+            <a href="{{ post.url | relative_url }}" class="post-title">{{ post.title }}</a>
             <p style="color:#475569;font-size:0.9rem;margin:0.5rem 0;">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
             <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(0,0,0,0.05);padding-top:0.8rem;margin-top:0.3rem;">
                 <span style="color:#94a3b8;font-size:0.8rem;"><i class="fa fa-calendar"></i> {{ post.date | date: "%Y-%m-%d" }}</span>

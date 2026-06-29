@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: 文章分类
 permalink: /categories/
 ---
@@ -12,14 +12,14 @@ permalink: /categories/
         <h2 class="tag-heading">
           <i class="fa fa-tag"></i> {{ tag[0] }}
         </h2>
-        <ul class="post-list-by-tag">
+        <div class="post-grid">
           {% for post in tag[1] %}
-            <li>
-              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            <div class="card post-card card-tilt">
+              <a href="{{ post.url | relative_url }}" class="post-title link-underline">{{ post.title }}</a>
               <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-            </li>
+            </div>
           {% endfor %}
-        </ul>
+        </div>
       </div>
     {% endfor %}
   {% else %}

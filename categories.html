@@ -19,9 +19,9 @@ permalink: /categories/
         <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
           {% for post in tag[1] %}
             <div class="card card-tilt" style="padding:1.2rem 1.5rem;">
-              <h2>
+              <h3>
                 <a href="{{ post.url | relative_url }}" class="post-title">{{ post.title }}</a>
-              </h2>
+              </h3>
               <span class="post-date" style="display:block;">{{ post.date | date: "%Y-%m-%d" }}</span>
             </div>
           {% endfor %}

@@ -19,7 +19,7 @@ permalink: /categories/
         <div class="card-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
           {% for post in tag[1] %}
             <div class="card card-tilt" style="padding:1.2rem 1.5rem;">
-              <a href="{{ post.url | relative_url }}" class="link-underline">{{ post.title }}</a>
+              <a href="{{ post.url | relative_url }}" class="post-title link-underline">{{ post.title }}</a>
               <span class="post-date">{{ post.date | date: "%Y-%m-%d" }}</span>
             </div>
           {% endfor %}

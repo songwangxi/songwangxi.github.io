@@ -24,7 +24,7 @@ title: 首页
 
         <!-- 预览内容：截取30字，超出用... -->
         <p style="color:#475569;font-size:0.9rem;line-height:1.6;margin:0.5rem 0 0.8rem 0;word-wrap:break-word;">
-          {{ post.content | strip_html | truncatewords: 30 }}
+          {{ post.content | strip_html | truncatewords: 30 | strip_newlines }}
         </p>
 
         <!-- 底部：时间 + Read More -->

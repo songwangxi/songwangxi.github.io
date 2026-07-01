@@ -22,9 +22,9 @@ title: 首页
           {% endfor %}
         </div>
 
-        <!-- 预览内容：截取30字，超出用... -->
+        <!-- 预览内容：截取80个字符 -->
         <p style="color:#475569;font-size:0.9rem;line-height:1.6;margin:0.5rem 0 0.8rem 0;word-wrap:break-word;">
-          {{ post.content | strip_html | truncatewords: 30 | strip_newlines }}
+          {{ post.content | strip_html | strip_newlines | truncate: 60 }}
         </p>
 
         <!-- 底部：时间 + Read More -->

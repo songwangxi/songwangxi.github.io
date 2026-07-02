@@ -2,20 +2,165 @@
 layout: default
 ---
 
-<div class="container" style="max-width:800px;padding:2rem 1.5rem;">
-    <div style="border-bottom:1px solid rgba(0,0,0,0.06);padding-bottom:1rem;margin-bottom:2rem;">
-        <h1 style="font-size:2rem;margin-bottom:0.3rem;"><span class="gradient" color1="#1e3a8a" color2="#60a5fa">{{ page.title }}</span></h1>
-        <div style="color:#94a3b8;font-size:0.9rem;">
-            <i class="fa fa-calendar"></i> {{ page.date | date: "%Y-%m-%d" }}
-            {% for tag in page.tags %}
-            <span style="background:rgba(79,70,229,0.10);color:#4f46e5;padding:0 10px;border-radius:20px;font-size:0.7rem;line-height:1.8;margin-left:4px;"><i class="fa fa-tag"></i> {{ tag }}</span>
-            {% endfor %}
-        </div>
+<link rel="stylesheet" href="/blog.css">
+
+<div class="post-wrapper">
+  <!-- 文章内容 -->
+  <div class="post-container">
+    <div class="post-header">
+      <h1><span class="gradient" color1="#1e3a8a" color2="#60a5fa">{{ page.title }}</span></h1>
+      <div class="post-meta">
+        <i class="fa fa-calendar"></i> {{ page.date | date: "%Y-%m-%d" }}
+        {% for tag in page.tags %}
+        <span class="post-tag"><i class="fa fa-tag"></i> {{ tag }}</span>
+        {% endfor %}
+      </div>
     </div>
 
-    <div style="line-height:1.9;font-size:1.05rem;color:#334155;">
-        {{ content }}
+    <div class="post-content" id="postContent">
+      {{ content }}
     </div>
+  </div>
 
-    <a href="/" class="link-underline" style="display:inline-block;margin-top:2.5rem;color:#4f46e5;text-decoration:none;"><i class="fa fa-arrow-left"></i> 返回首页</a>
+  <!-- 右侧目录 -->
+  <div class="post-toc" id="toc">
+    <div class="toc-title"><i class="fa fa-list"></i> 目录</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const content = document.getElementById('postContent');
+    const tocList = document.getElementById('tocList');
+    const headings = content.querySelectorAll('h1, h2, h3');
+    
+    if (headings.length === 0) {
+      document.getElementById('toc').style.display = 'none';
+      return;
+    }
+
+    headings.forEach(function(heading, index) {
+      // 生成 id
+      const id = 'heading-' + index;
+      heading.id = id;
+
+      // 计算层级
+      const level = parseInt(heading.tagName.charAt(1));
+      const indent = (level - 1) * 16;
+
+      // 创建目录项
+      const li = document.createElement('li');
+      li.style.paddingLeft = indent + 'px';
+      li.style.marginBottom = '4px';
+      
+      const a = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = heading.textContent;
+      a.style.textDecoration = 'none';
+      a.style.color = '#334155';
+      a.style.fontSize = (level === 1) ? '0.95rem' : '0.85rem';
+      a.style.fontWeight = (level === 1) ? '600' : '400';
+      a.style.transition = 'color 0.3s';
+      
+      a.addEventListener('mouseenter', function() {
+        a.style.color = '#4f46e5';
+      });
+      a.addEventListener('mouseleave', function() {
+        a.style.color = '#334155';
+      });
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  });
+</script>
+
+<style>
+.post-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.post-container {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 右侧目录 - 毛玻璃效果 */
+.post-toc {
+  position: sticky;
+  top: 2rem;
+  width: 240px;
+  flex-shrink: 0;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.2rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.toc-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1e293b;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 0.6rem;
+}
+
+.toc-title i {
+  color: #4f46e5;
+  margin-right: 6px;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  padding: 3px 0;
+  line-height: 1.5;
+}
+
+.toc-list li a {
+  display: block;
+  padding: 2px 0;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.toc-list li a:hover {
+  color: #4f46e5 !important;
+  background: rgba(79,70,229,0.06);
+  padding-left: 4px;
+}
+
+/* 移动端隐藏目录 */
+@media (max-width: 768px) {
+  .post-wrapper {
+    flex-direction: column;
+    padding: 1.2rem 1rem;
+  }
+  .post-toc {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin-top: 1.5rem;
+    order: 2;
+  }
+  .post-container {
+    order: 1;
+  }
+}
+</style>
